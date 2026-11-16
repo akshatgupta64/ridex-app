@@ -1,242 +1,232 @@
+/* RideX Modern Mobility Landing Page Styles */
 
-.home-container{
-    margin-top: 90px;
+.home-container {
+  margin-top: 65px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fafafa;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #1e293b;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  padding: 48px 0 64px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.hero-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef08a;
+  color: #854d0e;
+  border: 1px solid #fde047;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.hero-title {
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1.15;
+  color: #0f172a;
+  letter-spacing: -0.8px;
+}
+
+.hero-subtitle {
+  font-size: 17px;
+  color: #475569;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.hero-btn-primary {
+  background-color: #f9c935;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(249, 201, 53, 0.4);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.hero-btn-primary:hover {
+  background-color: #eab308;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 201, 53, 0.5);
+}
+
+.hero-btn-secondary {
+  background-color: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.hero-btn-secondary:hover {
+  background-color: #1e293b;
+  color: #f9c935;
+  transform: translateY(-2px);
+}
+
+/* Hero Right Simulation Card */
+.hero-preview-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08);
+  padding: 24px;
+  position: relative;
+}
+
+.hero-driver-bid-preview {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition: all 0.2s ease;
+}
+
+.hero-driver-bid-preview:hover {
+  border-color: #f9c935;
+  background: #fffbeb;
+}
+
+/* Modalities Section */
+.section-tag {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #d97706;
+}
+
+.section-heading {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+.modality-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  padding: 24px;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.modality-card:hover {
+  transform: translateY(-4px);
+  border-color: #cbd5e1;
+  box-shadow: 0 16px 32px -10px rgba(0,0,0,0.08);
+}
+
+.modality-icon-wrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 16px;
+}
+
+.modality-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Bidding Feature Section */
+.bidding-feature-box {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 24px;
+  padding: 48px 36px;
+  color: #ffffff;
+}
+
+.bidding-step-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f9c935;
+  color: #0f172a;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Metrics Bar */
+.metrics-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.metric-number {
+  font-size: 32px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.metric-label {
+  font-size: 13px;
+  color: #64748B;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+@media (max-width: 991px) {
+  .hero-title {
+    font-size: 34px;
+  }
+  .hero-section {
+    padding: 32px 0 40px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: 28px;
+  }
+  .hero-btn-primary, .hero-btn-secondary {
     width: 100%;
-    min-height: 200vh;
-    overflow: hidden;
-}
-.home-row{
-    height:500px;
-}
-.home-left{
-    display: flex;
     justify-content: center;
-    align-items: center;
-}
-.home-left h1{
-    margin: 10px 0px;
-    font-size: 45px;
-}
-.home-left p{
-    margin: 10px 0px;
-    font-size: 23px;
-    font-weight: 400;
-}
-
-.home-btn{
-border:none;
-outline: none;
-padding: 10px 30px;
-}
-
-.home-btn:nth-child(1){
-background-color: #f9c935;
-border-radius:30px 30px 30px 0px;
-}
-
-.home-btn:nth-child(2){
-background-color: #000;
-color: white;
-border-radius:30px 30px 0px 30px;
-}
-
-.home-right{
-    position: relative;
-}
-.background_image {
-    background-color: #f9c935;
-    width: 900px;
-    height: 500px;
-    border-radius: 350px;
-    top: 20px;
-    position: absolute;
-    right: -10px;
-    rotate: -45deg;
-    overflow: hidden;
-    z-index: -1;
-    transform: translatex(250px);
-}
-.page_one_image img {
-    height: 550px;
-    rotate: 45deg;
-    margin-top: 0px;
-    margin-left: -180px;
-}
-
-.safety-img-container{
-    max-width: 1000px;
-    width: 100%;
-    margin: 0px auto;
-    margin-top: 80px;
-    min-height: 5px;
-}
-.bike-img-mobile{
-    width: 100%;
-    background-color: #f9c935;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.know-img-container{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    gap:15px;
-}
-.container{
-    width: 50%;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-  padding: 0px;
-}
-.container:nth-child(1){
-    align-items: end;
-}
-.container:nth-child(2){
-    align-items: start;
-}
-.know-img-1{
-    max-width: 125px;
-    width: 100%;
-    height: 175px;
-    border-radius: 100px 100px 0px 100px;
-    overflow: hidden;
-}
-.design-1{
-    width: 50px;
-    height: 110px;
-    background-color: #f9c935;
-    border-radius: 30px 0px 30px 30px;
-    margin-top: 100px;
-}
-.design-2{
-    width: 75px;
-    height: 50px;
-    background-color: #f9c935;
-    border-radius: 30px 30px 30px 0px;
-    margin: 60px 0px;
-}
-.know-img-2{
-    max-width: 200px;
-    width: 100%;
-    height: 300px;
-    border-radius: 0px 100px 100px 100px;
-    overflow: hidden;
-}
-
-.head-line{
-    width: 50px;
-    height: 3px;
-    background-color: #f9c935;
-}
-.know-us-text{
-    width: 400px;
-    font-size: 16px;
-    font-weight: 500;
-    margin: 15px 0px;
-}
-.read-more-btn{
-    border: none;
-    outline: none;
-    background-color: #f9c935;
-    padding: 10px 30px;
-    border-radius: 30px 30px 30px 0px;
-    font-weight:600;
-    margin: 30px 0px;
-}
-
-.our-impact-container{
-    background-color: #ffe7a0;
-    padding: 20px 0px;
-}
-.impact-text{
-    font-size: 16px;
-    max-width: 600px;
-    width: 100%;
-    font-weight: 500;
-    margin: 10px 0px;
-}
-.container-2{
-    max-width: 600px;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 20px auto;
-}
-.box-1{
-    flex-basis: 25%;
-}
-.box{
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background-color: white;
-    margin: 0px auto;
-    font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    padding: 10px 5px;
-}
-.presence-img{
-    width: 45px;
-    height: 40px;
-    margin-top: 10px;
-}
-.box bold{
-    font-weight:bold;
-    margin-top: 5px;
-}
-.box p{
-    font-weight: 600;
-}
-
-
-@media(width<767px) {
-    .home-left h1{
-        font-size: 35px;
-    }
-    .home-row{
-        height: fit-content;
-    }
-    .home-left p{
-        font-size: 16px;
-        font-weight: 500;
-    }
-    .home-btn{
-        padding: 10px 20px;
-        font-size: 13px;
-    }
-    .know-img-1{
-    max-width: 110px;
-    width: 100%;
-    height: 160px;
-    }
-    .know-img-2{
-        max-width: 125px;
-        width: 100%;
-        height: 200px;
-    }
-    .design-1{
-        margin-top: 45px;
-    }
-   .know-us-text{
-    width: 320px;
-   }
-   .box-1{
-    flex-basis: 50%;
-    margin-top: 15px;
-   }
-   .safety-img-container{
-    margin-top: 0px;
-   }
-    
-}
-@media(767px<=width<=991px){
-    .safety-img-container{
-        margin-top: 0px;
-    }
+  }
 }

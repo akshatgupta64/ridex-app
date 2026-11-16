@@ -6,10 +6,9 @@
     justify-content: center;
 }
 
-
-@media(width<=767px){
-
-.row{
-    width: 103%;
-}
+/* Prevent horizontal page overflow on small screens. Bootstrap rows already
+   extend edge-to-edge via negative gutters, so no width hack is needed. */
+html,
+body{
+    overflow-x: hidden;
 }

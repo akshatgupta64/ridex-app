@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RideX — Smart Ride-Hailing & Intercity Carpooling System Design</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 18mm 20mm 18mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 9pt;
+        color: #64748B;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      color: #111827;
+      background: #FFFFFF;
+      line-height: 1.6;
+      font-size: 11pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    .cover-header {
+      text-align: center;
+      padding: 60px 20px 40px 20px;
+      margin-bottom: 20px;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .doc-title {
+      font-size: 26pt;
+      font-weight: bold;
+      line-height: 1.25;
+      margin: 0 0 16px 0;
+      color: #0F172A;
+    }
+
+    .doc-subtitle {
+      font-size: 13pt;
+      font-style: italic;
+      color: #475569;
+      max-width: 780px;
+      margin: 0 auto 30px auto;
+      line-height: 1.45;
+    }
+
+    .title-divider {
+      width: 180px;
+      height: 2px;
+      background: #D97706;
+      margin: 0 auto;
+    }
+
+    .main-section {
+      page-break-before: always;
+      break-before: page;
+      margin-top: 10px;
+    }
+
+    .sec-header {
+      font-size: 16pt;
+      font-weight: bold;
+      color: #0F172A;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      border-bottom: 2px solid #D97706;
+      padding-bottom: 4px;
+    }
+
+    .subsec-header {
+      font-size: 12.5pt;
+      font-weight: bold;
+      color: #0F172A;
+      margin-top: 18px;
+      margin-bottom: 6px;
+    }
+
+    .report-paragraph {
+      margin: 0 0 10px 0;
+      text-align: justify;
+      color: #111827;
+      font-size: 11pt;
+    }
+
+    .report-list {
+      margin: 0 0 12px 24px;
+      padding: 0;
+      font-size: 11pt;
+      color: #111827;
+    }
+
+    .report-list li {
+      margin-bottom: 4px;
+    }
+
+    .diagram-wrapper {
+      text-align: center;
+      margin: 22px auto;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .diagram-wrapper img {
+      max-width: 95%;
+      height: auto;
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+    }
+
+    .diagram-caption {
+      font-size: 9.5pt;
+      font-style: italic;
+      color: #475569;
+      margin-top: 8px;
+    }
+
+    .table-container {
+      margin: 14px 0;
+      overflow-x: auto;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      margin: 4px 0;
+      background: #FFFFFF;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    .report-table th {
+      background: #0F172A;
+      color: #FFFFFF;
+      font-weight: bold;
+      text-align: left;
+      padding: 7px 10px;
+      border: 1px solid #334155;
+    }
+
+    .report-table td {
+      padding: 6px 10px;
+      border: 1px solid #CBD5E1;
+      color: #111827;
+      vertical-align: top;
+    }
+
+    .report-table tr.even-row td {
+      background: #F8FAFC;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CLEAN TITLE COVER -->
+  <div class="cover-header">
+    <h1 class="doc-title">RideX — Smart Ride-Hailing & Intercity Carpooling System Design</h1>
+    <p class="doc-subtitle">
+      A Distributed Architecture and System Design Specification for Multi-Modal Mobility,<br>
+      Dynamic Peer-to-Peer Fare Negotiation, and High-Throughput Real-Time Telematics
+    </p>
+    <div class="title-divider"></div>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">1. Introduction & Executive Summary</h2>
+    <h3 class="subsec-header">1.1 Industry Background & Urban Mobility Challenges</h3>
+<p class="report-paragraph">Urban transportation ecosystems in high-density metropolitan areas face severe operational bottlenecks. Traditional Transportation Network Companies (TNCs) rely on centralized dispatching models where algorithms determine trip pricing, vehicle matching, and routing behind closed proprietary systems. While these platforms have digitized urban mobility, they have introduced major market distortions:</p>
+<p class="report-paragraph">1. Rigid Algorithmic Surge Pricing: During commute peaks, rainstorms, or supply crunches, centralized algorithms enforce non-negotiable surge multipliers (often 200% to 350% of baseline rates). Riders face unexpected price spikes, while drivers frequently receive only a fractional percentage of this surge.</p>
+<p class="report-paragraph">2. High Cancellation Rates & Supply Attrition: Centralized platforms historically withhold trip destinations and net payout figures from drivers until pickup. Consequently, drivers routinely reject rides, request offline cash negotiations, or arbitrarily cancel trips, severely degrading system reliability.</p>
+<p class="report-paragraph">3. High Intermediary Take-Rates: Industry aggregators extract 20% to 30% commission on every transaction, reducing driver take-home earnings while keeping consumer costs high.</p>
+<p class="report-paragraph">4. Fragmented Transit Silos: Commuters must switch between disparate mobile applications for daily city bike taxis, price-flexible cab trips, parcel deliveries, and intercity weekend carpools. This fragmentation forces users to maintain separate identities, split digital wallet balances, and manage disconnected trip histories.</p>
+    <h3 class="subsec-header">1.2 The RideX Platform Solution</h3>
+<p class="report-paragraph">RideX is a unified, multi-modal mobility and distributed real-time transportation platform that bridges intra-city on-demand hailing, peer-to-peer dynamic fare negotiation, and long-distance intercity corridor carpooling into a cohesive distributed architecture.</p>
+<p class="report-paragraph">Key Architectural Tenets of RideX:</p>
+<ul class="report-list">
+  <li>Multi-Modal Transit Unification: A single client interface and backend ecosystem coordinates Bike Taxi, Rapido Auto (three-wheeler), Cab Economy (four-wheeler AC), Express Parcel Delivery, and Intercity Carpooling.</li>
+  <li>Decentralized inDrive Bidding Protocol: Passengers propose custom base fares using intuitive pricing steppers. Nearby drivers review upfront route information and submit real-time counter-offers, creating a transparent, market-clearing equilibrium.</li>
+  <li>Atomic Concurrency & Mutual Consent: Distributed mutex locking guarantees single-winner ride assignment under high-concurrency race conditions, eliminating double-booking.</li>
+  <li>Spatial Corridor Carpooling: Car owners traveling between urban centers publish journeys with per-seat pricing. Spatial corridor buffering algorithms match passenger pickup and drop-off points along the driver's route with strict detour tolerance limits.</li>
+  <li>Auditable Financial Ledger: Cashless digital transactions operate on a double-entry ledger enforcing strict idempotency and an 85% driver net earnings payout (15% platform commission).</li>
+  <li>High-Throughput Real-Time Telemetry: A persistent WebSocket gateway streams low-latency driver GPS telemetry (< 80 ms broadcast latency) with hardware rate limiting and anti-spoofing verification.</li>
+</ul>
+    <h3 class="subsec-header">1.3 System Scope & Supported Modalities</h3>
+<p class="report-paragraph">The platform governs five operational transit modalities within a unified state engine:</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Modality</th>
+  <th>Vehicle Category</th>
+  <th>Primary Use Case</th>
+  <th>Pricing Mechanism</th>
+  <th>Dispatch / Matching Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Bike Taxi</td>
+  <td>Solo Motorcycle / Scooter</td>
+  <td>Fastest solo urban transit, bypassing traffic gridlock.</td>
+  <td>Dynamic Bidding (Base: ₹25 + ₹9/km after 1.5 km)</td>
+  <td>Proximity broadcast (< 3 km radius) with driver counter-bids.</td>
+</tr>
+<tr class="even-row">
+  <td>Rapido Auto</td>
+  <td>3-Wheeler Auto-Rickshaw</td>
+  <td>Pocket-friendly, weather-protected city commute.</td>
+  <td>Dynamic Bidding (Base: ₹35 + ₹14/km after 1.5 km)</td>
+  <td>Proximity broadcast (< 4 km radius) with driver counter-bids.</td>
+</tr>
+<tr>
+  <td>Cab Economy</td>
+  <td>4-Wheeler Compact Sedan / Hatchback</td>
+  <td>Comfortable, air-conditioned family or executive commute.</td>
+  <td>Dynamic Bidding (Base: ₹70 + ₹18/km after 2.0 km)</td>
+  <td>Proximity broadcast (< 5 km radius) with driver counter-bids.</td>
+</tr>
+<tr class="even-row">
+  <td>Rapido Parcel</td>
+  <td>2-Wheeler Courier Delivery</td>
+  <td>Same-day intra-city package and document transfer.</td>
+  <td>Fixed Distance Rate (Base: ₹30 + ₹11/km after 1.5 km)</td>
+  <td>Nearest available courier assignment with real-time waypoint tracking.</td>
+</tr>
+<tr>
+  <td>Intercity Carpool</td>
+  <td>Private Passenger Sedan / SUV</td>
+  <td>Scheduled city-to-city corridor transit (e.g., Bengaluru to Mysuru).</td>
+  <td>Driver-Set Per-Seat Price (Market-driven)</td>
+  <td>Spatial corridor route buffer matching with atomic seat inventory locking.</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <h3 class="subsec-header">1.4 Requirements Specification</h3>
+<p class="report-paragraph">Functional Requirements:</p>
+<ul class="report-list">
+  <li>FR-1 (User & Role Management): Seamless onboarding of riders and driver partners with bcrypt credential hashing, RBAC enforcement (rider, driver, admin), and session JWTs.</li>
+  <li>FR-2 (Multi-Modal Dispatch): Dynamic road routing via OpenStreetMap/OSRM, travel time computation, and automated rate card estimation.</li>
+  <li>FR-3 (Dynamic Bidding Auction): Real-time two-sided auction allowing riders to adjust custom fare proposals and drivers to return counter-bids.</li>
+  <li>FR-4 (Atomic Ride Claiming): Distributed mutex lock preventing race conditions during concurrent bid acceptance.</li>
+  <li>FR-5 (Cryptographic Security Gate): Mandatory 4-digit security OTP verification before ride status transitions to active transit (IN_PROGRESS).</li>
+  <li>FR-6 (Real-Time GPS Telematics): Low-latency WebSocket streaming of driver GPS coordinates, vehicle bearing, speed, and remaining distance to passenger maps.</li>
+  <li>FR-7 (Corridor Carpool Engine): Driver corridor publishing, origin/destination search filtering, and atomic multi-seat reservation.</li>
+  <li>FR-8 (Double-Entry Financial Ledger): Idempotent digital wallet recharges, automated fare deductions, 85% driver earnings split, and passenger tipping.</li>
+</ul>
+<p class="report-paragraph">Non-Functional Requirements:</p>
+<ul class="report-list">
+  <li>NFR-1 (Low Latency): API P95 response latency < 150 ms; WebSocket telemetry P99 delivery latency < 80 ms.</li>
+  <li>NFR-2 (High Availability): 99.99% operational uptime (< 52.6 minutes unplanned downtime annually) via stateless microservice scaling.</li>
+  <li>NFR-3 (Strict Financial Consistency): Zero-loss double-entry accounting with hardware-enforced unique idempotency keys on all balance mutations.</li>
+  <li>NFR-4 (Horizontal Scalability): Compute tier scales horizontally to handle 5x commute surges (peak 666,666 GPS telemetry QPS).</li>
+  <li>NFR-5 (Transport & Data Security): TLS 1.3 encryption across all network boundaries, strict Content Security Policy (CSP), token-bucket rate limiting, and PII masking.</li>
+</ul>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">2. Scale, Capacity & Performance Engineering</h2>
+    <h3 class="subsec-header">2.1 System Scale Assumptions</h3>
+<p class="report-paragraph">Capacity planning is formulated around a Tier-1 metropolitan deployment benchmark:</p>
+<ul class="report-list">
+  <li>Daily Active Users (DAU): 15,000,000 riders</li>
+  <li>Concurrent Online Drivers: 1,000,000 drivers transmitting telemetry</li>
+  <li>Completed Daily Rides: 5,000,000 trips/day</li>
+  <li>Driver Telemetry Ping Rate: 1 GPS coordinate update every 3 seconds</li>
+  <li>Peak Commute Surge Multiplier: 2.0x for driver telemetry; 5.0x for ride booking requests during morning and evening rush hours.</li>
+</ul>
+    <h3 class="subsec-header">2.2 Throughput Derivations (QPS)</h3>
+<p class="report-paragraph">1. Driver Telemetry Ingestion Throughput:</p>
+<p class="report-paragraph">Every online driver transmits a lightweight GPS telemetry packet every 3 seconds.</p>
+<ul class="report-list">
+  <li>Average Telemetry Ingestion QPS = (1,000,000 drivers) / (3 seconds) = 333,333 QPS</li>
+  <li>Peak Telemetry Ingestion QPS (2x commute surge) = 333,333 × 2 = 666,666 QPS</li>
+</ul>
+<p class="report-paragraph">2. Ride Booking Transaction Throughput:</p>
+<p class="report-paragraph">Ride requests follow a diurnal distribution with sharp peaks during commute windows (8:00–10:30 AM and 5:30–8:00 PM).</p>
+<ul class="report-list">
+  <li>Average Booking QPS = (5,000,000 rides) / (86,400 seconds) = 57.87 QPS</li>
+  <li>Peak Booking QPS (5x commute spike) = 57.87 × 5 = 289.35 QPS</li>
+</ul>
+<p class="report-paragraph">3. Dynamic Bidding Event Fanout:</p>
+<p class="report-paragraph">Each ride proposal broadcasts to an average of 10 nearby eligible drivers, generating approximately 4 competitive counter-bids per request.</p>
+<ul class="report-list">
+  <li>Peak Bidding Events QPS = 289.35 peak requests/sec × 4 counter-bids = 1,157.4 bidding events/sec</li>
+</ul>
+    <h3 class="subsec-header">2.3 Ingress Network Bandwidth Analysis</h3>
+<p class="report-paragraph">A telemetry ping payload contains:</p>
+<p class="report-paragraph">driver_id (16 Bytes) + latitude (8 Bytes) + longitude (8 Bytes) + bearing (4 Bytes) + speed (4 Bytes) + timestamp (8 Bytes) + socket framing overhead ≈ 64 Bytes total.</p>
+<ul class="report-list">
+  <li>Peak Ingress Bandwidth = 666,666 QPS × 64 Bytes = 42,666,624 Bytes/sec</li>
+  <li>Peak Ingress Bandwidth = 42.66 MB/s ≈ 341.3 Mbps</li>
+</ul>
+<p class="report-paragraph">This network bandwidth is readily load-balanced across an autoscaling pool of WebSocket gateway instances behind an Layer 7 Application Load Balancer.</p>
+    <h3 class="subsec-header">2.4 5-Year Persistent Storage Sizing</h3>
+<p class="report-paragraph">Completed ride records encapsulate route polylines, timestamps, financial ledger references, OTPs, and feedback tags:</p>
+<ul class="report-list">
+  <li>Average Ride Transaction Record Payload: ≈ 1.5 KB per record</li>
+  <li>Daily Structured Storage Ingestion = 5,000,000 rides/day × 1.5 KB = 7,500,000 KB ≈ 7.5 GB/day</li>
+  <li>Annual Storage Accumulation = 7.5 GB × 365 days ≈ 2.737 TB/year</li>
+  <li>5-Year Primary Structured Storage = 2.737 TB × 5 years ≈ 13.68 TB</li>
+</ul>
+<p class="report-paragraph">Storage with High-Availability Redundancy:</p>
+<ul class="report-list">
+  <li>With 3x PostgreSQL Multi-AZ replication, Write-Ahead Logging (WAL), and cold historical archival: Total 5-Year Storage Capacity = 13.68 TB × 3 ≈ 41.0 TB.</li>
+</ul>
+    <h3 class="subsec-header">2.5 Latency Budgets & Target Performance SLAs</h3>
+<p class="report-paragraph">The system enforces strict latency service level agreements (SLAs) across the distributed pipeline:</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Operation / Transaction</th>
+  <th>Target P95 Latency</th>
+  <th>Target P99 Latency</th>
+  <th>Architectural Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Driver GPS Ingestion</td>
+  <td>< 15 ms</td>
+  <td>< 25 ms</td>
+  <td>In-memory Redis geospatial sorted set ingestion.</td>
+</tr>
+<tr class="even-row">
+  <td>Telemetry Map Broadcast</td>
+  <td>< 50 ms</td>
+  <td>< 80 ms</td>
+  <td>Room-based WebSocket routing; zero broadcast storms.</td>
+</tr>
+<tr>
+  <td>Ride Creation & Routing</td>
+  <td>< 120 ms</td>
+  <td>< 180 ms</td>
+  <td>OSRM road graph engine with Haversine fallback.</td>
+</tr>
+<tr class="even-row">
+  <td>Bidding Mutex Acceptance</td>
+  <td>< 35 ms</td>
+  <td>< 60 ms</td>
+  <td>In-memory atomic transaction lock / Redis Redlock.</td>
+</tr>
+<tr>
+  <td>Wallet Ledger Settlement</td>
+  <td>< 45 ms</td>
+  <td>< 75 ms</td>
+  <td>Idempotent double-entry append with database row lock.</td>
+</tr>
+<tr class="even-row">
+  <td>Carpool Corridor Search</td>
+  <td>< 80 ms</td>
+  <td>< 140 ms</td>
+  <td>PostGIS spatial GIST index on route corridor buffer.</td>
+</tr>
+</tbody>
+</table>
+</div>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">3. Technology Stack & Infrastructure Rationale</h2>
+    <h3 class="subsec-header">3.1 Component Selection Matrix</h3>
+<p class="report-paragraph">Each technology in the RideX ecosystem was selected after thorough evaluation against production alternatives:</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Layer / Subsystem</th>
+  <th>Selected Technology</th>
+  <th>Evaluated Alternatives</th>
+  <th>Technical Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Frontend Framework</td>
+  <td>React 18 (SPA)</td>
+  <td>Angular, Vue.js</td>
+  <td>Concurrent rendering, automatic state batching, lightweight virtual DOM handling high-frequency telemetry updates without interface stutter.</td>
+</tr>
+<tr class="even-row">
+  <td>Mapping & Telemetry</td>
+  <td>Leaflet 1.9 + OpenStreetMap</td>
+  <td>Google Maps SDK, Mapbox GL</td>
+  <td>Open-source ecosystem, zero proprietary API licensing costs, lightweight vector rendering, custom SVG markers with hardware-accelerated CSS rotation.</td>
+</tr>
+<tr>
+  <td>Backend Runtime</td>
+  <td>Node.js LTS (v20) + Express</td>
+  <td>Java Spring Boot, Go, Python Django</td>
+  <td>Asynchronous, non-blocking libuv event loop excels at high-concurrency I/O multiplexing and persistent full-duplex WebSocket connections.</td>
+</tr>
+<tr class="even-row">
+  <td>Real-Time Gateway</td>
+  <td>Native ws Engine (v8.22)</td>
+  <td>Socket.io, Long Polling</td>
+  <td>Minimal memory footprint per connection (~2 KB vs ~15 KB in Socket.io), zero transport-fallback protocol overhead, direct RFC 6455 compliance.</td>
+</tr>
+<tr>
+  <td>Event Streaming</td>
+  <td>Apache Kafka (Target)</td>
+  <td>RabbitMQ, AWS SQS</td>
+  <td>Partition-based log ordering, ultra-high ingestion throughput (millions of msgs/sec), replayability for analytics and telemetry auditing.</td>
+</tr>
+<tr class="even-row">
+  <td>In-Memory & Indexing</td>
+  <td>Redis 7.2 + Uber H3 Index</td>
+  <td>Geohash, R-Tree, QuadTree</td>
+  <td>H3 hexagonal cells eliminate edge-distance distortion inherent in square grids; sub-millisecond O(1) memory lookups for nearby fleet discovery.</td>
+</tr>
+<tr>
+  <td>Primary Persistence</td>
+  <td>PostgreSQL 16 + PostGIS 3.4</td>
+  <td>MongoDB, MySQL, Cassandra</td>
+  <td>Strict ACID compliance for financial ledger, first-class spatial geometry types (GEOMETRY Point, LineString), and GIST spatial corridor indexing.</td>
+</tr>
+<tr class="even-row">
+  <td>Security & Cryptography</td>
+  <td>Bcrypt (cost 10) + JWT (HS256)</td>
+  <td>Argon2, Plain SHA-256</td>
+  <td>Proven adaptive salted key derivation against brute-force attacks; stateless cryptographically signed authorization headers.</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <h3 class="subsec-header">3.2 Real-Time Communication Architecture</h3>
+<p class="report-paragraph">The real-time layer operates via a native WebSocket server mounted on the HTTP server at /ws.</p>
+<p class="report-paragraph">Key Architectural Properties:</p>
+<ul class="report-list">
+  <li>Room-Based Channel Isolation: Subscriptions are partitioned by rideId. Telemetry pings and bidding counter-offers for a specific ride are routed exclusively to authorized sockets subscribed to that specific room, completely eliminating broadcast storms.</li>
+  <li>Application-Level Heartbeat: A 30-second ping/pong cycle tracks client socket liveness. Silent or dead mobile sockets (e.g., entering subway tunnels) are terminated after a single missed heartbeat to prevent socket descriptor leaks.</li>
+  <li>Anti-Spoofing Telemetry Guard: Sockets submitting location updates must authenticate as a driver and must match the driverId bound to the active ride. Spoofed coordinate updates from bystander sockets are rejected immediately.</li>
+  <li>Rate Limiting Gate: Telemetry frames arriving faster than 10 Hz (100 ms interval) are dropped at the socket boundary to protect downstream message queues.</li>
+</ul>
+    <h3 class="subsec-header">3.3 Geospatial Routing & OpenStreetMap Pipeline</h3>
+<p class="report-paragraph">Geospatial processing employs a multi-tiered pipeline:</p>
+<p class="report-paragraph">1. Primary Road Graph Routing: Road distance and travel duration are calculated via asynchronous HTTP requests to the Open Source Routing Machine (OSRM) driving API (router.project-osrm.org). OSRM evaluates real turn restrictions, one-way avenues, and road classifications.</p>
+<p class="report-paragraph">2. Resilient Mathematical Fallback Engine: If external OSRM nodes experience network timeouts (> 3500 ms) or connectivity drops, the system dynamically activates an internal mathematical engine:</p>
+<ul class="report-list">
+  <li>Great-circle Haversine formula determines spatial distance.</li>
+  <li>A quadratic Bezier polynomial interpolates 30 realistic road-like curved waypoints between origin and destination to maintain smooth map tracing.</li>
+</ul>
+<p class="report-paragraph">3. Forward Geocoding: OpenStreetMap Nominatim API resolves address strings and landmarks, debounced at 300 ms on the client and bounded to Indian geographic coordinates.</p>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">4. High-Level Design (HLD)</h2>
+    <h3 class="subsec-header">4.1 End-to-End Microservices Architecture</h3>
+<p class="report-paragraph">The high-level architecture decouples client applications, edge routing, stateless microservice compute tiers, real-time gateways, message streaming, and distributed persistence.</p>
+<div class="diagram-wrapper">
+  <img src="diagram_hld.png" alt="Figure 4.1: RideX High-Level Microservices & Distributed Real-Time Architecture" />
+  <p class="diagram-caption">Figure 4.1: RideX High-Level Microservices & Distributed Real-Time Architecture</p>
+</div>
+<p class="report-paragraph">Architectural Tier Decomposition:</p>
+<ul class="report-list">
+  <li>Client Tier: React 18 Single-Page Application (SPA) for riders and carpool travelers; driver partner mobile telemetry client.</li>
+  <li>Ingress & Security Tier: Layer 7 load balancer terminating TLS 1.3, enforcing token-bucket rate limiting (300 req/min), CORS allowlisting, and X-Request-ID correlation tracing.</li>
+  <li>Application Compute Tier: Stateless microservices managing Authentication, inDrive Bidding Coordination, Multi-Modal Dispatch, Intercity Carpooling, and Double-Entry Wallet Ledgers.</li>
+  <li>Real-Time WebSocket Gateway: Dedicated full-duplex /ws server maintaining persistent socket connections with room-based channel routing and sub-80ms telemetry streaming.</li>
+  <li>Messaging & In-Memory Tier: Apache Kafka event topics for high-throughput stream decoupling; Redis 7.2 cluster with Uber H3 spatial indexing and Redlock distributed mutex locks.</li>
+  <li>Persistence Tier: Clustered PostgreSQL 16 with PostGIS 3.4 spatial extensions and GIST geometric indexes.</li>
+</ul>
+    <h3 class="subsec-header">4.2 Ingress Gateway & Edge Security Boundary</h3>
+<p class="report-paragraph">All incoming network traffic traverses the Layer 7 Ingress Gateway:</p>
+<p class="report-paragraph">1. TLS 1.3 Termination: Eliminates cryptographic overhead on application compute pods.</p>
+<p class="report-paragraph">2. Correlation Tracing: Automatically stamps every incoming request with a unique X-Request-Id UUID, propagating it through all downstream service logs.</p>
+<p class="report-paragraph">3. Helmet Security Suite: Injects enterprise headers (Content-Security-Policy, X-Content-Type-Options: nosniff, X-Frame-Options: DENY, Strict-Transport-Security).</p>
+<p class="report-paragraph">4. Rate Limiting Policy: Token-bucket in-memory limiters prevent volumetric attacks:</p>
+<ul class="report-list">
+  <li>General API endpoints: 300 requests/minute per client IP.</li>
+  <li>Authentication routes (/login, /register): 30 requests/15 minutes.</li>
+  <li>Support contact submissions: 10 requests/10 minutes.</li>
+</ul>
+    <h3 class="subsec-header">4.3 Data Flow Architecture</h3>
+<p class="report-paragraph">The platform's data flow is characterized by two distinct levels:</p>
+<p class="report-paragraph">1. Data Flow Level 0 (Context Level): Isolates external actors (Riders, Drivers, OpenStreetMap/OSRM) communicating across secure perimeters with the RideX Platform. Riders submit ride requests and custom proposed fares; drivers stream live GPS coordinates and submit competitive counter-bids; external map engines provide road geometries.</p>
+<p class="report-paragraph">2. Data Flow Level 1 (Decomposed Subsystems):</p>
+<ul class="report-list">
+  <li>Ingress: Rider inputs flow through the Ingress Gateway, which validates the JWT and hands off to the Ride Booking Service.</li>
+  <li>Routing: The Ride Service queries the OSRM Routing Engine for distance and polyline waypoints.</li>
+  <li>Bidding: The inDrive Bidding Coordinator broadcasts the ride proposal to eligible drivers via the WebSocket Gateway.</li>
+  <li>Bids Ingestion: Driver counter-bids flow into the Bidding Service and are pushed live to the rider.</li>
+  <li>Mutex Assignment: Rider acceptance acquires an atomic lock, updates the ride status to ASSIGNED, and expires competing bids.</li>
+  <li>Telemetry: The assigned driver transmits GPS pings, which the Telemetry Engine streams to the rider map.</li>
+  <li>Settlement: Upon ride completion, the Wallet Ledger Service executes double-entry fare deductions.</li>
+</ul>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">5. Low-Level Design (LLD) & Microservices Architecture</h2>
+    <h3 class="subsec-header">5.1 inDrive Dynamic Bidding Coordinator</h3>
+<ul class="report-list">
+  <li>Functional Responsibility: Manages the two-sided reverse auction lifecycle where passengers propose fares and drivers submit competitive bids.</li>
+</ul>
+<div class="diagram-wrapper">
+  <img src="diagram_bidding_flowchart.png" alt="Figure 5.1: RideX inDrive-Style Peer-to-Peer Dynamic Bidding Negotiation Protocol" />
+  <p class="diagram-caption">Figure 5.1: RideX inDrive-Style Peer-to-Peer Dynamic Bidding Negotiation Protocol</p>
+</div>
+<ul class="report-list">
+  <li>State Machine Workflow:</li>
+</ul>
+<p class="report-paragraph">1. Rider creates ride with proposed fare F_offer. Status initialized to BIDDING.</p>
+<p class="report-paragraph">2. Bidding Coordinator enforces fare boundary constraints:</p>
+<p class="report-paragraph">0.6 × F_base ≤ F_offer ≤ 3.0 × F_base</p>
+<p class="report-paragraph">3. Eligible nearby drivers receive the broadcast and submit counter-bids (F_driver, ETA, rating).</p>
+<p class="report-paragraph">4. Bids persist with a 25-second Time-To-Live (TTL).</p>
+<p class="report-paragraph">5. When rider clicks "Accept Bid", an atomic compare-and-swap mutex is acquired. Status transitions to ASSIGNED. Competing bids are immediately updated to EXPIRED.</p>
+    <h3 class="subsec-header">5.2 Ride Dispatch & Lifecycle Coordinator</h3>
+<ul class="report-list">
+  <li>Functional Responsibility: Manages ride state transitions, multi-modal rate card computations, security OTP validation, and cancellation rules.</li>
+</ul>
+<div class="diagram-wrapper">
+  <img src="diagram_state_machine.png" alt="Figure 5.2: RideX Finite State Machine (FSM) Lifecycle & Mutex State Transitions" />
+  <p class="diagram-caption">Figure 5.2: RideX Finite State Machine (FSM) Lifecycle & Mutex State Transitions</p>
+</div>
+<ul class="report-list">
+  <li>Supported Vehicle Rate Cards:</li>
+  <li>Bike Taxi: Base ₹25 (covers 1.5 km), ₹9/km thereafter.</li>
+  <li>Rapido Auto: Base ₹35 (covers 1.5 km), ₹14/km thereafter.</li>
+  <li>Cab Economy: Base ₹70 (covers 2.0 km), ₹18/km thereafter.</li>
+  <li>Rapido Parcel: Base ₹30 (covers 1.5 km), ₹11/km thereafter.</li>
+  <li>OTP Verification Gate: Ride commencement requires validating a 4-digit code. The status cannot transition to IN_PROGRESS without OTP match, preventing fraudulent driver starts.</li>
+</ul>
+    <h3 class="subsec-header">5.3 Real-Time Telemetry & GPS Ingestion Engine</h3>
+<ul class="report-list">
+  <li>Functional Responsibility: High-frequency ingestion, boundary validation, and broadcast fanout of driver GPS coordinates.</li>
+  <li>Ingestion Pipeline:</li>
+</ul>
+<p class="report-paragraph">1. WebSocket message driver_location_updated arrives with [lat, lon], speed, heading, and distance remaining.</p>
+<p class="report-paragraph">2. Driver identity verified against active ride assignment.</p>
+<p class="report-paragraph">3. Lat/Lon verified within valid geographic ranges: Latitude between -90 and +90 degrees, Longitude between -180 and +180 degrees.</p>
+<p class="report-paragraph">4. 10 Hz rate limiter drops telemetry spam.</p>
+<p class="report-paragraph">5. Payload broadcast to all sockets in the ride's subscription room.</p>
+    <h3 class="subsec-header">5.4 Intercity Carpool Corridor Engine</h3>
+<ul class="report-list">
+  <li>Functional Responsibility: Manages intercity travel publishing, corridor search matching, and atomic seat inventory reservations.</li>
+  <li>Corridor Booking Rules:</li>
+</ul>
+<p class="report-paragraph">1. Drivers publish origin, destination, scheduled departure, vehicle model, seat capacity (1–6 seats), and price per seat.</p>
+<p class="report-paragraph">2. Passengers search via origin/destination query filters.</p>
+<p class="report-paragraph">3. Reservation verifies passenger is not the publishing driver.</p>
+<p class="report-paragraph">4. Atomic check verifies availableSeats ≥ requestedSeats.</p>
+<p class="report-paragraph">5. Passenger wallet is debited (pricePerSeat × seats).</p>
+<p class="report-paragraph">6. Seat inventory is decremented atomically; reservation receipt CP-BK-... is generated.</p>
+    <h3 class="subsec-header">5.5 Double-Entry Wallet & Settlement Ledger</h3>
+<ul class="report-list">
+  <li>Functional Responsibility: Maintains immutable financial auditability across passenger payments, driver earnings, and wallet top-ups.</li>
+  <li>Accounting Rules:</li>
+  <li>Trip Completion Settlement: Agreed fare F debited from rider wallet. Net driver payout = 0.85 × F (85%). Platform fee retained = 0.15 × F (15%).</li>
+  <li>Gratuity Tipping: 100% of passenger tips transfer directly to driver wallet without platform deduction.</li>
+  <li>Idempotency Guarantee: Every financial balance mutation requires an idempotencyKey. Duplicate submissions return the existing ledger entry without mutating balances.</li>
+</ul>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">6. Core Algorithms & Mathematical Formulations</h2>
+    <h3 class="subsec-header">6.1 Great-Circle Haversine Distance Formulation</h3>
+<p class="report-paragraph">The Haversine equation calculates the shortest spherical surface distance between two geographic coordinates (lat₁, lon₁) and (lat₂, lon₂) on Earth:</p>
+<p class="report-paragraph">Let R = 6,371 km (mean radius of Earth).</p>
+<ul class="report-list">
+  <li>Δlat = (lat₂ - lat₁) × π / 180</li>
+  <li>Δlon = (lon₂ - lon₁) × π / 180</li>
+  <li>a = sin²(Δlat / 2) + cos(lat₁ × π / 180) × cos(lat₂ × π / 180) × sin²(Δlon / 2)</li>
+  <li>c = 2 × atan2(√a, √(1 - a))</li>
+  <li>Distance d = R × c</li>
+</ul>
+<p class="report-paragraph">Computational Complexity:</p>
+<ul class="report-list">
+  <li>Time Complexity: O(1) constant time execution.</li>
+  <li>Space Complexity: O(1) auxiliary memory.</li>
+</ul>
+    <h3 class="subsec-header">6.2 Quadratic Bezier Curve Waypoint Smoothing</h3>
+<p class="report-paragraph">When external routing graphs are unavailable, the fallback engine computes intermediate waypoints along a quadratic Bezier polynomial to simulate realistic road curvature:</p>
+<p class="report-paragraph">Given start point P_start, destination P_end, and midpoint P_mid with an orthogonal curvature offset:</p>
+<ul class="report-list">
+  <li>B(t) = (1 - t)² × P_start + 2(1 - t)t × P_mid + t² × P_end, where t ∈ [0, 1]</li>
+</ul>
+<p class="report-paragraph">Sampling N = 30 discrete values of parameter t yields smooth, visually accurate road paths on client maps.</p>
+<ul class="report-list">
+  <li>Time Complexity: O(N) where N = 30 waypoints.</li>
+  <li>Space Complexity: O(N) coordinate array buffer.</li>
+</ul>
+    <h3 class="subsec-header">6.3 inDrive Dynamic Bidding Auction Protocol</h3>
+<p class="report-paragraph">The bidding auction operates on dynamic market equilibrium:</p>
+<p class="report-paragraph">1. Rider submits proposed fare F_offer via stepper controls.</p>
+<p class="report-paragraph">2. Ingress gateway verifies boundaries against baseline fare F_base:</p>
+<p class="report-paragraph">0.6 × F_base ≤ F_offer ≤ 3.0 × F_base</p>
+<p class="report-paragraph">3. Broadcast engine identifies drivers within Uber H3 k-ring(3) spatial proximity.</p>
+<p class="report-paragraph">4. Candidate drivers evaluate route and submit bids F_driver with arrival ETAs.</p>
+<p class="report-paragraph">5. Sockets fan out bids to passenger client.</p>
+<p class="report-paragraph">6. Rider clicks "Accept Bid". An atomic mutex lock is acquired:</p>
+<ul class="report-list">
+  <li>If status is BIDDING, transition status to ASSIGNED, bind driverId, and set winning bid to ACCEPTED.</li>
+  <li>All other bids transition to EXPIRED.</li>
+  <li>If lock fails (already claimed), return HTTP 409 Conflict.</li>
+</ul>
+    <h3 class="subsec-header">6.4 Intercity Carpool Corridor Buffering Algorithm</h3>
+<p class="report-paragraph">The corridor algorithm determines whether a passenger's pickup and drop-off points lie acceptably along a driver's intercity route polyline R:</p>
+<div class="diagram-wrapper">
+  <img src="diagram_carpool_corridor.png" alt="Figure 6.1: RideX Intercity Corridor Spatial Buffering & 15% Detour Tolerance Geometry" />
+  <p class="diagram-caption">Figure 6.1: RideX Intercity Corridor Spatial Buffering & 15% Detour Tolerance Geometry</p>
+</div>
+<p class="report-paragraph">1. Spatial Corridor Polygon: The driver's route polyline R is buffered by radius W = 5,000 meters (5 km corridor width):</p>
+<p class="report-paragraph">Corridor = ST_Buffer(R, 5000)</p>
+<p class="report-paragraph">2. Geometric Inclusion Filter: Both passenger pickup P_pickup and drop P_drop must fall within the corridor polygon:</p>
+<p class="report-paragraph">ST_Contains(Corridor, P_pickup) AND ST_Contains(Corridor, P_drop) = TRUE</p>
+<p class="report-paragraph">3. Detour Tolerance Cap: The additional travel distance imposed by the passenger detour must not exceed 15% of the driver's direct route:</p>
+<p class="report-paragraph">Distance(Start → Pickup → Drop → End) ≤ 1.15 × Distance(Start → End)</p>
+<p class="report-paragraph">4. Atomic Seat Inventory Decrement:</p>
+<p class="report-paragraph">UPDATE carpools SET available_seats = available_seats - S WHERE id = carpool_id AND available_seats ≥ S</p>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">7. Storage Architecture & Database Design</h2>
+    <h3 class="subsec-header">7.1 Database Architecture Overview</h3>
+<p class="report-paragraph">The persistence tier is engineered in PostgreSQL 16 augmented with PostGIS 3.4 spatial extensions:</p>
+<ul class="report-list">
+  <li>Relational Core: Enforces foreign key referential integrity, unique constraints, and check constraints across users, rides, bids, carpools, and wallets.</li>
+  <li>Spatial Extension: Incorporates native geographic point and linestring types (GEOMETRY Point, LineString) with Generalized Search Tree (GIST) indexing for sub-millisecond range and buffer queries.</li>
+  <li>Double-Entry Ledger: Financial balances are audited through an append-only transaction table with unique idempotency keys.</li>
+</ul>
+    <h3 class="subsec-header">7.2 Entity Schema Specifications</h3>
+<p class="report-paragraph">1. Table: users (Identity & Accounts)</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Column Name</th>
+  <th>Data Type</th>
+  <th>Constraints</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>PRIMARY KEY</td>
+  <td>Unique user ID (usr-uuid or drv-uuid).</td>
+</tr>
+<tr class="even-row">
+  <td><code>name<code></td>
+  <td>VARCHAR(120)</td>
+  <td>NOT NULL</td>
+  <td>User's full legal name.</td>
+</tr>
+<tr>
+  <td><code>email<code></td>
+  <td>VARCHAR(160)</td>
+  <td>UNIQUE, NOT NULL</td>
+  <td>Account email address.</td>
+</tr>
+<tr class="even-row">
+  <td><code>phone<code></td>
+  <td>VARCHAR(20)</td>
+  <td>NOT NULL</td>
+  <td>Mobile phone contact.</td>
+</tr>
+<tr>
+  <td><code>role<code></td>
+  <td>VARCHAR(20)</td>
+  <td>NOT NULL, CHECK in (rider, driver, admin)</td>
+  <td>Authorization role.</td>
+</tr>
+<tr class="even-row">
+  <td><code>password_hash<code></td>
+  <td>VARCHAR(255)</td>
+  <td>NOT NULL</td>
+  <td>Bcrypt hash (salt cost 10).</td>
+</tr>
+<tr>
+  <td><code>created_at<code></td>
+  <td>TIMESTAMPTZ</td>
+  <td>NOT NULL, DEFAULT NOW()</td>
+  <td>Account creation timestamp.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="report-paragraph">2. Table: drivers (Fleet & Vehicle Profiles)</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Column Name</th>
+  <th>Data Type</th>
+  <th>Constraints</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>PRIMARY KEY</td>
+  <td>Unique driver profile ID.</td>
+</tr>
+<tr class="even-row">
+  <td><code>user_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>FOREIGN KEY REFERENCES users(id)</td>
+  <td>Parent user reference.</td>
+</tr>
+<tr>
+  <td><code>vehicle_type<code></td>
+  <td>VARCHAR(20)</td>
+  <td>NOT NULL, CHECK in (bike, auto, cab_economy)</td>
+  <td>Vehicle classification.</td>
+</tr>
+<tr class="even-row">
+  <td><code>model<code></td>
+  <td>VARCHAR(100)</td>
+  <td>NOT NULL</td>
+  <td>Make, model, and color.</td>
+</tr>
+<tr>
+  <td><code>plate_number<code></td>
+  <td>VARCHAR(20)</td>
+  <td>NOT NULL</td>
+  <td>Registration plate number.</td>
+</tr>
+<tr class="even-row">
+  <td><code>rating<code></td>
+  <td>DECIMAL(3, 2)</td>
+  <td>DEFAULT 5.00</td>
+  <td>Average rating (1.00 to 5.00).</td>
+</tr>
+<tr>
+  <td><code>trips<code></td>
+  <td>INT</td>
+  <td>DEFAULT 0</td>
+  <td>Completed trip count.</td>
+</tr>
+<tr class="even-row">
+  <td><code>status<code></td>
+  <td>VARCHAR(20)</td>
+  <td>DEFAULT 'ONLINE'</td>
+  <td>Driver availability status.</td>
+</tr>
+<tr>
+  <td><code>location_geom<code></td>
+  <td>GEOMETRY(Point, 4326)</td>
+  <td>NOT NULL</td>
+  <td>Current GPS coordinate point.</td>
+</tr>
+<tr class="even-row">
+  <td><code>wallet_earnings<code></td>
+  <td>DECIMAL(10, 2)</td>
+  <td>DEFAULT 0.00</td>
+  <td>Total earnings accumulated.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="report-paragraph">3. Table: rides (Intra-City Trip Transactions)</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Column Name</th>
+  <th>Data Type</th>
+  <th>Constraints</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>id<code></td>
+  <td>VARCHAR(32)</td>
+  <td>PRIMARY KEY</td>
+  <td>Booking code (RAP-XXXXX).</td>
+</tr>
+<tr class="even-row">
+  <td><code>rider_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>FOREIGN KEY REFERENCES users(id)</td>
+  <td>Requesting passenger.</td>
+</tr>
+<tr>
+  <td><code>driver_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>FOREIGN KEY REFERENCES drivers(id), NULL</td>
+  <td>Assigned driver partner.</td>
+</tr>
+<tr class="even-row">
+  <td><code>service<code></td>
+  <td>VARCHAR(50)</td>
+  <td>NOT NULL</td>
+  <td>Service display title.</td>
+</tr>
+<tr>
+  <td><code>vehicle_type<code></td>
+  <td>VARCHAR(20)</td>
+  <td>NOT NULL</td>
+  <td>Vehicle category code.</td>
+</tr>
+<tr class="even-row">
+  <td><code>pickup_address<code></td>
+  <td>TEXT</td>
+  <td>NOT NULL</td>
+  <td>Human-readable pickup location.</td>
+</tr>
+<tr>
+  <td><code>drop_address<code></td>
+  <td>TEXT</td>
+  <td>NOT NULL</td>
+  <td>Human-readable drop location.</td>
+</tr>
+<tr class="even-row">
+  <td><code>pickup_geom<code></td>
+  <td>GEOMETRY(Point, 4326)</td>
+  <td>NOT NULL</td>
+  <td>Pickup spatial coordinate.</td>
+</tr>
+<tr>
+  <td><code>drop_geom<code></td>
+  <td>GEOMETRY(Point, 4326)</td>
+  <td>NOT NULL</td>
+  <td>Destination spatial coordinate.</td>
+</tr>
+<tr class="even-row">
+  <td><code>distance_km<code></td>
+  <td>DECIMAL(6, 2)</td>
+  <td>NOT NULL</td>
+  <td>Road distance.</td>
+</tr>
+<tr>
+  <td><code>duration_mins<code></td>
+  <td>INT</td>
+  <td>NOT NULL</td>
+  <td>Estimated duration.</td>
+</tr>
+<tr class="even-row">
+  <td><code>initial_offer_fare<code></td>
+  <td>DECIMAL(8, 2)</td>
+  <td>NOT NULL</td>
+  <td>Rider's initial proposed fare.</td>
+</tr>
+<tr>
+  <td><code>agreed_fare<code></td>
+  <td>DECIMAL(8, 2)</td>
+  <td>NULL</td>
+  <td>Final agreed bidding fare.</td>
+</tr>
+<tr class="even-row">
+  <td><code>status<code></td>
+  <td>VARCHAR(25)</td>
+  <td>NOT NULL, CHECK in (BIDDING, ASSIGNED, ARRIVED, IN_PROGRESS, COMPLETED, CANCELLED)</td>
+  <td>State machine status.</td>
+</tr>
+<tr>
+  <td><code>ride_otp<code></td>
+  <td>VARCHAR(6)</td>
+  <td>NOT NULL</td>
+  <td>4-digit security start code.</td>
+</tr>
+<tr class="even-row">
+  <td><code>rating<code></td>
+  <td>INT</td>
+  <td>NULL, CHECK between 1 and 5</td>
+  <td>Passenger review score.</td>
+</tr>
+<tr>
+  <td><code>tip_amount<code></td>
+  <td>DECIMAL(8, 2)</td>
+  <td>DEFAULT 0.00</td>
+  <td>Gratuity transferred to driver.</td>
+</tr>
+<tr class="even-row">
+  <td><code>created_at<code></td>
+  <td>TIMESTAMPTZ</td>
+  <td>DEFAULT NOW()</td>
+  <td>Ride request timestamp.</td>
+</tr>
+<tr>
+  <td><code>completed_at<code></td>
+  <td>TIMESTAMPTZ</td>
+  <td>NULL</td>
+  <td>Trip finish timestamp.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="report-paragraph">4. Table: ride_bids (inDrive Counter-Offers)</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Column Name</th>
+  <th>Data Type</th>
+  <th>Constraints</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>bid_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>PRIMARY KEY</td>
+  <td>Unique bid identifier (BID-...).</td>
+</tr>
+<tr class="even-row">
+  <td><code>ride_id<code></td>
+  <td>VARCHAR(32)</td>
+  <td>FOREIGN KEY REFERENCES rides(id) ON DELETE CASCADE</td>
+  <td>Associated ride request.</td>
+</tr>
+<tr>
+  <td><code>driver_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>FOREIGN KEY REFERENCES drivers(id)</td>
+  <td>Bidding driver.</td>
+</tr>
+<tr class="even-row">
+  <td><code>driver_price<code></td>
+  <td>DECIMAL(8, 2)</td>
+  <td>NOT NULL</td>
+  <td>Counter-offer fare amount.</td>
+</tr>
+<tr>
+  <td><code>eta_mins<code></td>
+  <td>INT</td>
+  <td>NOT NULL</td>
+  <td>Driver pickup arrival ETA.</td>
+</tr>
+<tr class="even-row">
+  <td><code>distance_km<code></td>
+  <td>DECIMAL(4, 1)</td>
+  <td>NOT NULL</td>
+  <td>Distance from driver to pickup.</td>
+</tr>
+<tr>
+  <td><code>status<code></td>
+  <td>VARCHAR(15)</td>
+  <td>DEFAULT 'PENDING'</td>
+  <td>Bid state (PENDING, ACCEPTED, EXPIRED).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="report-paragraph">5. Table: carpools (Intercity Corridor Journeys)</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Column Name</th>
+  <th>Data Type</th>
+  <th>Constraints</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>id<code></td>
+  <td>VARCHAR(32)</td>
+  <td>PRIMARY KEY</td>
+  <td>Unique carpool ID (CP-XXXX).</td>
+</tr>
+<tr class="even-row">
+  <td><code>driver_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>FOREIGN KEY REFERENCES users(id)</td>
+  <td>Publishing car owner.</td>
+</tr>
+<tr>
+  <td><code>from_city<code></td>
+  <td>VARCHAR(80)</td>
+  <td>NOT NULL</td>
+  <td>Origin metropolitan city.</td>
+</tr>
+<tr class="even-row">
+  <td><code>to_city<code></td>
+  <td>VARCHAR(80)</td>
+  <td>NOT NULL</td>
+  <td>Destination metropolitan city.</td>
+</tr>
+<tr>
+  <td><code>departure_time<code></td>
+  <td>VARCHAR(80)</td>
+  <td>NOT NULL</td>
+  <td>Scheduled departure time string.</td>
+</tr>
+<tr class="even-row">
+  <td><code>car_model<code></td>
+  <td>VARCHAR(120)</td>
+  <td>NOT NULL</td>
+  <td>Vehicle make and registration.</td>
+</tr>
+<tr>
+  <td><code>total_seats<code></td>
+  <td>INT</td>
+  <td>NOT NULL, CHECK between 1 and 6</td>
+  <td>Total seat capacity.</td>
+</tr>
+<tr class="even-row">
+  <td><code>available_seats<code></td>
+  <td>INT</td>
+  <td>NOT NULL, CHECK >= 0</td>
+  <td>Remaining unreserved inventory.</td>
+</tr>
+<tr>
+  <td><code>price_per_seat<code></td>
+  <td>DECIMAL(8, 2)</td>
+  <td>NOT NULL</td>
+  <td>Driver-set fare per passenger.</td>
+</tr>
+<tr class="even-row">
+  <td><code>route_geom<code></td>
+  <td>GEOMETRY(LineString, 4326)</td>
+  <td>NULL</td>
+  <td>Corridor polyline geometry.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="report-paragraph">6. Table: carpool_bookings (Seat Reservations)</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Column Name</th>
+  <th>Data Type</th>
+  <th>Constraints</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>booking_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>PRIMARY KEY</td>
+  <td>Unique booking receipt (CP-BK-...).</td>
+</tr>
+<tr class="even-row">
+  <td><code>carpool_id<code></td>
+  <td>VARCHAR(32)</td>
+  <td>FOREIGN KEY REFERENCES carpools(id)</td>
+  <td>Target carpool journey.</td>
+</tr>
+<tr>
+  <td><code>passenger_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>FOREIGN KEY REFERENCES users(id)</td>
+  <td>Reserving passenger.</td>
+</tr>
+<tr class="even-row">
+  <td><code>seats<code></td>
+  <td>INT</td>
+  <td>NOT NULL, CHECK between 1 and 6</td>
+  <td>Quantity of seats reserved.</td>
+</tr>
+<tr>
+  <td><code>total_cost<code></td>
+  <td>DECIMAL(8, 2)</td>
+  <td>NOT NULL</td>
+  <td>Cost debited (price_per_seat × seats).</td>
+</tr>
+<tr class="even-row">
+  <td><code>created_at<code></td>
+  <td>TIMESTAMPTZ</td>
+  <td>DEFAULT NOW()</td>
+  <td>Reservation timestamp.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="report-paragraph">7. Table: wallets and wallet_ledger (Financial Accounting)</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Table</th>
+  <th>Column Name</th>
+  <th>Data Type</th>
+  <th>Constraints</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>wallets<code></td>
+  <td><code>user_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>PRIMARY KEY REFERENCES users(id)</td>
+  <td>User wallet owner.</td>
+</tr>
+<tr class="even-row">
+  <td><code>wallets<code></td>
+  <td><code>balance<code></td>
+  <td>DECIMAL(10, 2)</td>
+  <td>NOT NULL, DEFAULT 0.00, CHECK >= 0</td>
+  <td>Available INR balance.</td>
+</tr>
+<tr>
+  <td><code>wallet_ledger<code></td>
+  <td><code>id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>PRIMARY KEY</td>
+  <td>Transaction UUID (tx-...).</td>
+</tr>
+<tr class="even-row">
+  <td><code>wallet_ledger<code></td>
+  <td><code>wallet_id<code></td>
+  <td>VARCHAR(64)</td>
+  <td>FOREIGN KEY REFERENCES wallets(user_id)</td>
+  <td>Account debited or credited.</td>
+</tr>
+<tr>
+  <td><code>wallet_ledger<code></td>
+  <td><code>ride_id<code></td>
+  <td>VARCHAR(32)</td>
+  <td>FOREIGN KEY REFERENCES rides(id), NULL</td>
+  <td>Linked trip transaction.</td>
+</tr>
+<tr class="even-row">
+  <td><code>wallet_ledger<code></td>
+  <td><code>type<code></td>
+  <td>VARCHAR(20)</td>
+  <td>NOT NULL, CHECK in (CREDIT, DEBIT)</td>
+  <td>Direction of fund transfer.</td>
+</tr>
+<tr>
+  <td><code>wallet_ledger<code></td>
+  <td><code>amount<code></td>
+  <td>DECIMAL(10, 2)</td>
+  <td>NOT NULL</td>
+  <td>Transfer amount in INR.</td>
+</tr>
+<tr class="even-row">
+  <td><code>wallet_ledger<code></td>
+  <td><code>idempotency_key<code></td>
+  <td>VARCHAR(120)</td>
+  <td>UNIQUE, NOT NULL</td>
+  <td>Deduplication token.</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <h3 class="subsec-header">7.3 Enterprise Indexing Strategy</h3>
+<p class="report-paragraph">The production database incorporates specialized B-Tree and GIST spatial indexes:</p>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Table Name</th>
+  <th>Index Identifier</th>
+  <th>Type</th>
+  <th>Indexed Column(s)</th>
+  <th>Architectural Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>rides<code></td>
+  <td><code>idx_rides_status<code></td>
+  <td>B-Tree</td>
+  <td><code>status<code></td>
+  <td>Sub-millisecond filtering of active bidding and en-route rides.</td>
+</tr>
+<tr class="even-row">
+  <td><code>rides<code></td>
+  <td><code>idx_rides_rider<code></td>
+  <td>B-Tree</td>
+  <td><code>rider_id, created_at DESC<code></td>
+  <td>Instant retrieval of personal ride history and receipts.</td>
+</tr>
+<tr>
+  <td><code>rides<code></td>
+  <td><code>idx_rides_pickup_spatial<code></td>
+  <td>GIST</td>
+  <td><code>pickup_geom<code></td>
+  <td>Spatial proximity range queries for nearby fleet matching.</td>
+</tr>
+<tr class="even-row">
+  <td><code>drivers<code></td>
+  <td><code>idx_drivers_spatial<code></td>
+  <td>GIST</td>
+  <td><code>location_geom<code></td>
+  <td>Proximity fleet matching within a 3 km radial distance.</td>
+</tr>
+<tr>
+  <td><code>ride_bids<code></td>
+  <td><code>idx_bids_ride_id<code></td>
+  <td>B-Tree</td>
+  <td><code>ride_id<code></td>
+  <td>Instant retrieval of all competing bids for an active auction.</td>
+</tr>
+<tr class="even-row">
+  <td><code>carpools<code></td>
+  <td><code>idx_carpools_corridor<code></td>
+  <td>B-Tree</td>
+  <td><code>from_city, to_city<code></td>
+  <td>Rapid city-to-city corridor trip filtering.</td>
+</tr>
+<tr>
+  <td><code>carpools<code></td>
+  <td><code>idx_carpools_geom<code></td>
+  <td>GIST</td>
+  <td><code>route_geom<code></td>
+  <td>PostGIS spatial corridor buffer evaluation (ST_Buffer).</td>
+</tr>
+<tr class="even-row">
+  <td><code>wallet_ledger<code></td>
+  <td><code>idx_ledger_idempotency<code></td>
+  <td>Unique B-Tree</td>
+  <td><code>idempotency_key<code></td>
+  <td>Guarantees hardware-level duplicate transaction rejection.</td>
+</tr>
+</tbody>
+</table>
+</div>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">8. Complete API Catalog & Protocol Contracts</h2>
+    <h3 class="subsec-header">8.1 Authentication & Session Management APIs</h3>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Method</th>
+  <th>Endpoint Path</th>
+  <th>Auth Required</th>
+  <th>Request Parameters / Fields</th>
+  <th>Response Fields</th>
+  <th>Status Codes</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>POST<code></td>
+  <td><code>/api/auth/register<code></td>
+  <td>Public (Rate: 30/15m)</td>
+  <td>name, email, phone, password, role, vehicleType, model, plateNumber</td>
+  <td>token, user: { id, name, email, role }</td>
+  <td>201, 400, 409</td>
+  <td>Registers new rider or driver partner, hashes password, initializes wallet with bonus.</td>
+</tr>
+<tr class="even-row">
+  <td><code>POST<code></td>
+  <td><code>/api/auth/login<code></td>
+  <td>Public (Rate: 30/15m)</td>
+  <td>email, password</td>
+  <td>token, user: { id, name, email, role }</td>
+  <td>200, 400, 401</td>
+  <td>Authenticates credentials using bcrypt; issues 7-day HMAC-SHA256 JWT session token.</td>
+</tr>
+<tr>
+  <td><code>GET<code></td>
+  <td><code>/api/auth/me<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>None (Header token)</td>
+  <td>user, wallet: { balance }, driverProfile</td>
+  <td>200, 401, 404</td>
+  <td>Retrieves profile, current wallet balance, and driver metadata for the authenticated caller.</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <h3 class="subsec-header">8.2 Intra-City Ride Dispatch & Lifecycle APIs</h3>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Method</th>
+  <th>Endpoint Path</th>
+  <th>Auth Required</th>
+  <th>Request Parameters / Fields</th>
+  <th>Response Fields</th>
+  <th>Status Codes</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>POST<code></td>
+  <td><code>/api/rides<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>pickupCoords, dropCoords, vehicleType, proposedFare, paymentMethod</td>
+  <td>ride: { id, status, rideOtp, ... }, bids: []</td>
+  <td>201, 400, 500</td>
+  <td>Creates ride, computes road distance via OSRM, initializes status to BIDDING, generates OTP.</td>
+</tr>
+<tr class="even-row">
+  <td><code>GET<code></td>
+  <td><code>/api/rides/:id<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>Path id</td>
+  <td>ride, bids: []</td>
+  <td>200, 403, 404</td>
+  <td>Scoped ride details query (accessible only to creator, assigned driver, or platform admin).</td>
+</tr>
+<tr>
+  <td><code>GET<code></td>
+  <td><code>/api/rides<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>Query limit (max 200)</td>
+  <td>rides: []</td>
+  <td>200, 401</td>
+  <td>Returns chronological ride history filtered by caller's user or driver profile ID.</td>
+</tr>
+<tr class="even-row">
+  <td><code>POST<code></td>
+  <td><code>/api/rides/:id/start<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>Path id, Body: otp</td>
+  <td>ride: { status: 'IN_PROGRESS' }</td>
+  <td>200, 400, 403, 409</td>
+  <td>Commences trip following 4-digit security OTP verification. Broadcasts ride_started.</td>
+</tr>
+<tr>
+  <td><code>POST<code></td>
+  <td><code>/api/rides/:id/complete<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>Path id</td>
+  <td>ride: { status: 'COMPLETED' }, wallet</td>
+  <td>200, 403, 409</td>
+  <td>Completes trip, executes 85/15 automated wallet settlement, appends ledger entries.</td>
+</tr>
+<tr class="even-row">
+  <td><code>POST<code></td>
+  <td><code>/api/rides/:id/rate<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>Path id, Body: rating, feedbackTags, tipAmount</td>
+  <td>success: true</td>
+  <td>200, 400, 403, 409</td>
+  <td>Records passenger rating (1–5) and executes direct wallet-to-wallet driver gratuity tip.</td>
+</tr>
+<tr>
+  <td><code>POST<code></td>
+  <td><code>/api/rides/:id/cancel<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>Path id</td>
+  <td>success: true</td>
+  <td>200, 403, 409</td>
+  <td>Cancels uncompleted ride; records canceling user ID; broadcasts ride_cancelled.</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <h3 class="subsec-header">8.3 inDrive Dynamic Fare Negotiation APIs</h3>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Method</th>
+  <th>Endpoint Path</th>
+  <th>Auth Required</th>
+  <th>Request Parameters / Fields</th>
+  <th>Response Fields</th>
+  <th>Status Codes</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>POST<code></td>
+  <td><code>/api/rides/:id/accept-bid<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>Path id, Body: bidId</td>
+  <td>ride: { status: 'ASSIGNED' }, bid</td>
+  <td>200, 400, 403, 409</td>
+  <td>Acquires atomic mutex lock, assigns winning driver, sets winning bid ACCEPTED, expires other bids.</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <h3 class="subsec-header">8.4 Intercity Carpooling & Seat Reservation APIs</h3>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Method</th>
+  <th>Endpoint Path</th>
+  <th>Auth Required</th>
+  <th>Request Parameters / Fields</th>
+  <th>Response Fields</th>
+  <th>Status Codes</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>GET<code></td>
+  <td><code>/api/carpools<code></td>
+  <td>Public / Optional Auth</td>
+  <td>Query: from, to (city filters)</td>
+  <td>carpools: []</td>
+  <td>200</td>
+  <td>Discovers available carpool journeys; strips driver phone numbers for privacy protection.</td>
+</tr>
+<tr class="even-row">
+  <td><code>POST<code></td>
+  <td><code>/api/carpools<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>fromCity, toCity, departureTime, carModel, totalSeats, pricePerSeat</td>
+  <td>carpool: { id: 'CP-XXXX', ... }</td>
+  <td>201, 400</td>
+  <td>Driver publishes intercity corridor journey with custom per-seat pricing.</td>
+</tr>
+<tr>
+  <td><code>POST<code></td>
+  <td><code>/api/carpools/:id/book<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>Path id, Body: seats</td>
+  <td>booking: { bookingId, ... }, carpool, wallet</td>
+  <td>200, 400</td>
+  <td>Reserves passenger seats, atomically decrements inventory, debits passenger wallet balance.</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <h3 class="subsec-header">8.5 Digital Wallet & Financial Ledger APIs</h3>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Method</th>
+  <th>Endpoint Path</th>
+  <th>Auth Required</th>
+  <th>Request Parameters / Fields</th>
+  <th>Response Fields</th>
+  <th>Status Codes</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>GET<code></td>
+  <td><code>/api/wallet<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>None</td>
+  <td>wallet: { balance }, ledger: []</td>
+  <td>200, 401</td>
+  <td>Returns caller's digital wallet balance and chronological transaction passbook ledger.</td>
+</tr>
+<tr class="even-row">
+  <td><code>POST<code></td>
+  <td><code>/api/wallet/topup<code></td>
+  <td>Protected (Bearer JWT)</td>
+  <td>amount, idempotencyKey</td>
+  <td>wallet: { balance }, entry: { id, type }</td>
+  <td>200, 400</td>
+  <td>Idempotent digital wallet recharge; returns existing entry on replay without double-crediting.</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <h3 class="subsec-header">8.6 Persistent WebSocket Event Protocol (/ws)</h3>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Event Name</th>
+  <th>Direction</th>
+  <th>Originator</th>
+  <th>Payload Fields</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>connection_established<code></td>
+  <td>Server ➔ Client</td>
+  <td>Gateway Server</td>
+  <td>authenticated: bool, user: object</td>
+  <td>Initial welcome handshake upon establishing persistent connection.</td>
+</tr>
+<tr class="even-row">
+  <td><code>authenticate<code></td>
+  <td>Client ➔ Server</td>
+  <td>Client Socket</td>
+  <td>token: string</td>
+  <td>Explicit session authentication if token was not supplied in connection query string.</td>
+</tr>
+<tr>
+  <td><code>subscribe_ride<code></td>
+  <td>Client ➔ Server</td>
+  <td>Client Socket</td>
+  <td>rideId: string</td>
+  <td>Subscribes socket to private room for a specific ride's telemetry and bidding events.</td>
+</tr>
+<tr class="even-row">
+  <td><code>subscription_confirmed<code></td>
+  <td>Server ➔ Client</td>
+  <td>Gateway Server</td>
+  <td>rideId: string, status: string</td>
+  <td>Confirms authorized socket subscription to the ride's channel.</td>
+</tr>
+<tr>
+  <td><code>bid_created<code></td>
+  <td>Server ➔ Client</td>
+  <td>Bidding Service</td>
+  <td>bid: { bidId, driverName, driverPrice, etaMins }</td>
+  <td>Broadcasts driver counter-offer to subscribed passenger map in real time.</td>
+</tr>
+<tr class="even-row">
+  <td><code>bid_accepted<code></td>
+  <td>Server ➔ Client</td>
+  <td>Gateway Server</td>
+  <td>ride: object, bid: object</td>
+  <td>Notifies subscribers that a specific driver bid was accepted by the rider.</td>
+</tr>
+<tr>
+  <td><code>ride_status_changed<code></td>
+  <td>Server ➔ Client</td>
+  <td>Lifecycle Engine</td>
+  <td>status: string, ride: object</td>
+  <td>Broadcasts lifecycle transitions (ASSIGNED, IN_PROGRESS, COMPLETED, CANCELLED).</td>
+</tr>
+<tr class="even-row">
+  <td><code>driver_location_updated<code></td>
+  <td>Both Ways</td>
+  <td>Driver / Gateway</td>
+  <td>coords: [lat, lng], speedKmH, heading, etaMins</td>
+  <td>Ingests driver hardware GPS and streams real-time vehicle movement to passenger map.</td>
+</tr>
+<tr>
+  <td><code>ride_started<code></td>
+  <td>Server ➔ Client</td>
+  <td>Lifecycle Engine</td>
+  <td>ride: object</td>
+  <td>Broadcasts trip commencement following valid OTP verification.</td>
+</tr>
+<tr class="even-row">
+  <td><code>ride_completed<code></td>
+  <td>Server ➔ Client</td>
+  <td>Lifecycle Engine</td>
+  <td>ride: object</td>
+  <td>Broadcasts trip completion and opens passenger receipt and rating dialogs.</td>
+</tr>
+<tr>
+  <td><code>ride_cancelled<code></td>
+  <td>Server ➔ Client</td>
+  <td>Lifecycle Engine</td>
+  <td>rideId: string, cancelledBy: string</td>
+  <td>Broadcasts trip cancellation to all connected parties.</td>
+</tr>
+</tbody>
+</table>
+</div>
+  </div>
+  <div class="main-section">
+    <h2 class="sec-header">9. Project Execution Schedule & 5-Week Gantt Chart</h2>
+    <h3 class="subsec-header">9.1 5-Phase, 5-Week Engineering Schedule</h3>
+<p class="report-paragraph">The RideX platform was engineered across an intensive 5-week schedule structured into 5 discrete phases:</p>
+<ul class="report-list">
+  <li>Phase 1 (Week 1): Architectural Requirements & Capacity Modeling.</li>
+  <li>Phase 2 (Week 2): Core Ingress Gateway, Identity & Security Pipeline.</li>
+  <li>Phase 3 (Week 3): Multi-Modal Dispatch Engine & Road Routing Pipeline.</li>
+  <li>Phase 4 (Week 4): inDrive Dynamic Bidding Coordinator & WebSocket Gateway.</li>
+  <li>Phase 5 (Week 5): Intercity Carpool Corridor Engine, Testing & Verification.</li>
+</ul>
+    <h3 class="subsec-header">9.2 Engineering Gantt Chart</h3>
+<div class="diagram-wrapper">
+  <img src="diagram_gantt_chart.png" alt="Figure 9.1: RideX Engineering Implementation Schedule (5 Phases across 5 Weeks)" />
+  <p class="diagram-caption">Figure 9.1: RideX Engineering Implementation Schedule (5 Phases across 5 Weeks)</p>
+</div>
+<div class="table-container">
+<table class="report-table">
+<thead>
+<tr>
+  <th>Project Phase</th>
+  <th>Milestone & Primary Work Breakdown</th>
+  <th>Week 1</th>
+  <th>Week 2</th>
+  <th>Week 3</th>
+  <th>Week 4</th>
+  <th>Week 5</th>
+  <th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Phase 1: Architecture & Capacity Math</td>
+  <td>System requirements, QPS throughput derivations, bandwidth sizing, PostGIS ERD relational modeling.</td>
+  <td>ACTIVE</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+  <td>COMPLETED</td>
+</tr>
+<tr class="even-row">
+  <td>Phase 2: Ingress & Security Pipeline</td>
+  <td>Express gateway, token-bucket rate limiting (300 req/min), bcrypt credential hashing, stateless JWT sessions.</td>
+  <td>—</td>
+  <td>ACTIVE</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+  <td>COMPLETED</td>
+</tr>
+<tr>
+  <td>Phase 3: Multi-Modal Routing & Maps</td>
+  <td>Leaflet maps, OSRM road graph engine, Haversine/Bezier mathematical fallbacks, vehicle rate cards.</td>
+  <td>—</td>
+  <td>—</td>
+  <td>ACTIVE</td>
+  <td>—</td>
+  <td>—</td>
+  <td>COMPLETED</td>
+</tr>
+<tr class="even-row">
+  <td>Phase 4: inDrive Bidding & WebSockets</td>
+  <td>Full-duplex WebSocket gateway (/ws), room isolation, dynamic stepper controls, atomic mutex ride claiming.</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+  <td>ACTIVE</td>
+  <td>—</td>
+  <td>COMPLETED</td>
+</tr>
+<tr>
+  <td>Phase 5: Carpooling & Verification</td>
+  <td>Carpool corridor buffering (ST_Buffer), double-entry wallet ledger, automated Jest test suite (23 tests).</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+  <td>ACTIVE</td>
+  <td>COMPLETED</td>
+</tr>
+</tbody>
+</table>
+</div>
+  </div>
+
+</body>
+</html>

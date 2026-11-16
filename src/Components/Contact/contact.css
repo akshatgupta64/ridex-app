@@ -64,7 +64,7 @@
     font-size: 16px;
 }
 
-@media (width<=991px){
+@media (max-width: 991px) {
     .address-div{
         width: 100%;
         margin: 3px 0px 8px 0px;

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RideX — System Design Viva Preparation & Team Roles Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page {
+      size: A4;
+      margin: 16mm 14mm 16mm 14mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.5;
+      font-size: 11pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    .cover {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      color: #ffffff;
+      padding: 32px 28px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border-left: 8px solid #f59e0b;
+    }
+
+    .cover h1 {
+      font-size: 24pt;
+      font-weight: 800;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+
+    .cover .subtitle {
+      font-size: 13pt;
+      color: #cbd5e1;
+      margin: 0 0 14px 0;
+      font-weight: 400;
+    }
+
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+    .badge-dark { background: #334155; color: #f8fafc; }
+
+    h2 {
+      font-size: 15pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0 0 10px 0;
+      color: #334155;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      page-break-inside: avoid;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 13pt;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .card-role {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #4338ca;
+      background: #e0e7ff;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .speech-box {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin: 10px 0;
+      font-style: italic;
+      color: #065f46;
+      font-size: 10pt;
+    }
+
+    .speech-title {
+      font-weight: 700;
+      font-style: normal;
+      color: #047857;
+      margin-bottom: 4px;
+      font-size: 9.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .callout {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin: 10px 0;
+      color: #78350f;
+      font-size: 10pt;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #0f172a;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f1f5f9;
+    }
+
+    ul, ol {
+      margin: 6px 0 10px 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin-bottom: 4px;
+      color: #334155;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #e2e8f0;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 9pt;
+      color: #0f172a;
+    }
+
+    .code-block {
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      margin: 8px 0;
+      overflow-x: auto;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .qa-box {
+      margin-bottom: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: #ffffff;
+      page-break-inside: avoid;
+    }
+
+    .qa-question {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 10.5pt;
+      margin-bottom: 4px;
+    }
+
+    .qa-answer {
+      color: #334155;
+      font-size: 10pt;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 1px solid #cbd5e1;
+      font-size: 8.5pt;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER HEADER -->
+  <div class="cover">
+    <h1>RideX — System Design Viva Guide</h1>
+    <div class="subtitle">Distributed Mobility, Dynamic inDrive Bidding & Intercity Carpooling Architecture</div>
+    <p style="margin: 0; color: #94a3b8; font-size: 9.5pt;">Prepared for Academic Final Project System Design Viva Examination</p>
+    <div class="badge-bar">
+      <span class="badge badge-amber">4-Member Team Ownership</span>
+      <span class="badge badge-blue">System Design Defense</span>
+      <span class="badge badge-green">Production Real-Time WebSockets</span>
+      <span class="badge badge-purple">Uber H3 Spatial Indexing</span>
+      <span class="badge badge-dark">Redlock & ACID Mutex</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: 60-SECOND ELEVATOR PITCH -->
+  <h2>1. Project Executive Overview (The 60-Second Intro)</h2>
+  <div class="speech-box">
+    <div class="speech-title">Ready-to-Speak Intro (Memorize for any professor):</div>
+    "RideX is a distributed multi-modal mobility platform that unites on-demand intra-city ride hailing (Rapido), peer-to-peer dynamic fare negotiation (inDrive), and long-distance corridor carpooling into a high-availability, ACID-compliant architecture.<br><br>
+    Architecturally, it solves three complex distributed systems challenges:
+    <strong>(1)</strong> High-throughput real-time GPS telemetry ingesting 333,000 pings/sec with sub-100ms latency,
+    <strong>(2)</strong> Race-condition-free dynamic bidding using atomic database conditional commits and Redlock distributed mutexes, and
+    <strong>(3)</strong> Spatial road corridor buffering using PostGIS ST_Buffer for intercity route matching."
+  </div>
+
+  <!-- SECTION 2: SCALE & CAPACITY MATH -->
+  <h2>2. Back-of-the-Envelope Capacity Estimations</h2>
+  <p>Professors frequently test candidate intuition by asking for hardware and throughput calculations. Quote these numbers with confidence:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Estimated Value</th>
+        <th>Derivation / Formula</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Peak Concurrent Active Drivers</strong></td>
+        <td><strong>1,000,000 drivers</strong></td>
+        <td>Multi-city peak operating volume across 100+ cities</td>
+      </tr>
+      <tr>
+        <td><strong>Driver GPS Ping Frequency</strong></td>
+        <td><strong>1 ping / 3 seconds</strong></td>
+        <td>Industry standard balance between phone battery and route accuracy</td>
+      </tr>
+      <tr>
+        <td><strong>Location Ingestion QPS</strong></td>
+        <td><strong>333,333 QPS (Avg)<br>666,666 QPS (Peak)</strong></td>
+        <td><code>(1,000,000 / 3) &times; 2</code> rush-hour spike multiplier</td>
+      </tr>
+      <tr>
+        <td><strong>Network Ingestion Bandwidth</strong></td>
+        <td><strong>42.6 MB/s (341 Mbps)</strong></td>
+        <td><code>666,666 QPS &times; 64 Bytes</code> per telemetry packet</td>
+      </tr>
+      <tr>
+        <td><strong>Daily Completed Rides</strong></td>
+        <td><strong>5,000,000 rides/day</strong></td>
+        <td>Calculated across bikes, autos, economy cabs, and parcels</td>
+      </tr>
+      <tr>
+        <td><strong>5-Year Primary Storage Growth</strong></td>
+        <td><strong>13.65 TB (41 TB 3x Repl.)</strong></td>
+        <td><code>5M rides &times; 1.5 KB &times; 365 days &times; 5 years</code></td>
+      </tr>
+      <tr>
+        <td><strong>Target Dispatch &amp; Lock Latency</strong></td>
+        <td><strong>&lt; 85 ms (P99)</strong></td>
+        <td>In-memory spatial lookup in Redis + fast WebSocket fan-out</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 3: 4-PERSON SYSTEM DESIGN ROLES -->
+  <h2>3. Team Roles &amp; System Design Breakdown</h2>
+  <p>Every team member owns a core pillar of the distributed architecture. Each role is balanced with explicit features, system design concepts, and a ready-to-speak viva introduction.</p>
+
+  <!-- MEMBER 1 CARD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Member 1: Dynamic Bidding &amp; Concurrency Architect</div>
+      <div class="card-role">inDrive Bidding &amp; State Machine</div>
+    </div>
+    <p><strong>Primary Features Owned:</strong></p>
+    <ul>
+      <li><strong>Dynamic inDrive Fare Negotiation</strong>: Passenger proposes fare (e.g. ₹50); nearby drivers receive offer and counter-bid (e.g. ₹60, ₹55).</li>
+      <li><strong>Passenger Driver Selection</strong>: Side-by-side comparison of driver price, rating, vehicle model, and real-time ETA.</li>
+      <li><strong>Ride Lifecycle Finite State Machine (FSM)</strong>: Server-side state progression (<code>REQUESTED &rarr; BIDDING &rarr; ASSIGNED &rarr; IN_PROGRESS &rarr; COMPLETED / CANCELLED</code>).</li>
+      <li><strong>Fare Estimation Rules</strong>: Vehicle-specific baseline calculations (Bike, Auto, Cab Economy, Parcel) based on road distance.</li>
+    </ul>
+
+    <p><strong>System Design Concepts to Defend in Viva:</strong></p>
+    <ul>
+      <li><strong>Finite State Machine Integrity</strong>: Enforcing that state transitions are valid on the server. Invalid transitions (e.g., cancelling an already completed ride) are strictly rejected.</li>
+      <li><strong>Atomic Concurrency Control</strong>: Preventing two drivers from claiming the same ride. Handled via atomic SQL conditional updates:
+        <div class="code-block">UPDATE rides SET driver_id = $id, status = 'ASSIGNED' WHERE id = $rideId AND status = 'BIDDING';</div>
+      </li>
+      <li><strong>Distributed Mutex (Redlock)</strong>: In a multi-instance microservices tier, Redis Redlock locks the <code>ride_id</code> key during assignment.</li>
+      <li><strong>Asynchronous TTL Expiry</strong>: Driver bids have a 25-second countdown timer; unaccepted bids auto-expire to free driver availability.</li>
+    </ul>
+
+    <div class="speech-box">
+      <div class="speech-title">Member 1 Viva Speech (30 Seconds):</div>
+      "My role was the Distributed Bidding Protocol and Concurrency Control. I designed the finite state machine governing the ride lifecycle, and engineered the atomic database transactions and Redlock distributed mutex to eliminate double-driver allocation race conditions during high-concurrency bidding."
+    </div>
+  </div>
+
+  <!-- MEMBER 2 CARD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Member 2: Real-Time Telemetry &amp; WebSocket Ingress Architect</div>
+      <div class="card-role">Streaming Ingress &amp; Pub/Sub</div>
+    </div>
+    <p><strong>Primary Features Owned:</strong></p>
+    <ul>
+      <li><strong>Live Driver GPS Tracking</strong>: Continuous transmission of driver coordinates, speed, heading, and remaining ETA.</li>
+      <li><strong>WebSocket Gateway (<code>ws://localhost:5000/ws</code>)</strong>: Low-latency, full-duplex persistent connection gateway.</li>
+      <li><strong>Room-Based Pub/Sub Isolation (<code>subscribe_ride</code>)</strong>: Delivering ride events exclusively to authorized subscribers.</li>
+      <li><strong>Connection Lifecycle Management</strong>: Heartbeat ping/pong, exponential backoff reconnection, and driver GPS simulator.</li>
+    </ul>
+
+    <p><strong>System Design Concepts to Defend in Viva:</strong></p>
+    <ul>
+      <li><strong>Protocol Trade-offs (WebSockets vs Polling vs SSE)</strong>: WebSockets eliminate 800-byte HTTP header overhead per ping, reducing network bandwidth by over 90% with 2-byte frame overhead.</li>
+      <li><strong>Preventing Broadcast Storms</strong>: Room isolation ensures Ride #101 events are published <em>only</em> to the authenticated driver and rider of #101 ($O(1)$ delivery vs $O(N)$ global flooding).</li>
+      <li><strong>Thundering Herd Mitigation</strong>: Heartbeat ping/pong every 30s prunes dead sockets. Exponential backoff with randomized jitter ($1s \to 2s \to 4s$) prevents server crashes during gateway recovery.</li>
+      <li><strong>Rate Limiting &amp; Anti-Spoofing</strong>: Token bucket algorithm caps telemetry at 10 pings/sec; rejects coordinates from drivers not assigned to that ride.</li>
+    </ul>
+
+    <div class="speech-box">
+      <div class="speech-title">Member 2 Viva Speech (30 Seconds):</div>
+      "I architected the Real-Time Telemetry and WebSocket Ingress Gateway. I implemented room-isolated pub/sub to eliminate broadcast storms, engineered the heartbeat ping/pong lifecycle to handle client network drops, and designed the horizontal scaling strategy using a Redis Pub/Sub cluster."
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- MEMBER 3 CARD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Member 3: Geospatial Indexing &amp; Carpooling Architect</div>
+      <div class="card-role">Spatial Indexing &amp; Route Corridor</div>
+    </div>
+    <p><strong>Primary Features Owned:</strong></p>
+    <ul>
+      <li><strong>Nearby Driver Discovery</strong>: Locating available drivers within a 3 km radius around the rider's pickup point.</li>
+      <li><strong>Road Routing &amp; Waypoint Geometry</strong>: OSRM road graph engine calculating true road paths and travel duration.</li>
+      <li><strong>Intercity Carpooling (Publish &amp; Browse)</strong>: Scheduled highway carpool catalog with seat counts and custom driver pricing.</li>
+      <li><strong>Carpool Corridor Route Matching</strong>: Matching riders traveling along an intercity highway route and reserving seats.</li>
+    </ul>
+
+    <p><strong>System Design Concepts to Defend in Viva:</strong></p>
+    <ul>
+      <li><strong>Uber H3 Hexagonal Spatial Index</strong>: Why hexagons beat Geohash and QuadTrees: All 6 neighboring cells are equidistant from the center cell (unlike squares with $\sqrt{2}$ diagonal distortion). In-memory <code>k-ring(3)</code> lookup executes in under $0.5\text{ ms}$.</li>
+      <li><strong>Spatial Corridor Buffering (<code>ST_Buffer</code>)</strong>: The driver's intercity road vector polyline $R$ is expanded into a 5 km spatial polygon:
+        <div class="code-block">Corridor = ST_Buffer(R, 5000);</div>
+        A passenger's ride is compatible if both pickup and drop-off points are inside the corridor:
+        <div class="code-block">ST_Contains(Corridor, P_pickup) AND ST_Contains(Corridor, P_drop) = TRUE;</div>
+      </li>
+      <li><strong>Inventory Concurrency</strong>: Overbooking is mathematically prevented using atomic conditional SQL decrements:
+        <div class="code-block">UPDATE carpools SET available_seats = available_seats - $seats WHERE id = $id AND available_seats &gt;= $seats;</div>
+      </li>
+    </ul>
+
+    <div class="speech-box">
+      <div class="speech-title">Member 3 Viva Speech (30 Seconds):</div>
+      "My responsibility was Geospatial Indexing and Carpool Corridor Matching. I designed the spatial partitioning using Uber H3 hexagonal indexing at resolution 8 for sub-millisecond driver lookups, and implemented PostGIS ST_Buffer spatial corridor matching to pair intercity carpool routes with zero overbooking."
+    </div>
+  </div>
+
+  <!-- MEMBER 4 CARD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Member 4: Security, Database Sharding &amp; Financial Ledger Architect</div>
+      <div class="card-role">Data Tier, Auth &amp; Double-Entry Ledger</div>
+    </div>
+    <p><strong>Primary Features Owned:</strong></p>
+    <ul>
+      <li><strong>Authentication &amp; RBAC</strong>: Secure registration and login for Riders, Drivers, and Platform Administrators.</li>
+      <li><strong>Resource Ownership Enforcement</strong>: Object-level authorization preventing User B from modifying or cancelling User A's ride.</li>
+      <li><strong>Ride Security OTP</strong>: 4-digit one-time password verified on the server before ride status transitions to <code>IN_PROGRESS</code>.</li>
+      <li><strong>In-App Wallet &amp; Double-Entry Ledger</strong>: Simulated idempotent wallet top-ups, driver 85/15 commission split, and tip settlement.</li>
+    </ul>
+
+    <p><strong>System Design Concepts to Defend in Viva:</strong></p>
+    <ul>
+      <li><strong>Stateless Authentication (JWT vs Server Sessions)</strong>: Signed HS256 JWTs allow any backend node in a cluster to verify tokens without querying a central session cache.</li>
+      <li><strong>Cryptographic Password Security</strong>: Passwords are salted and hashed with <strong>bcrypt (work factor 10)</strong>. Plaintext passwords never exist in database records or API telemetry logs.</li>
+      <li><strong>Double-Entry Accounting &amp; Idempotency</strong>: Wallet balances are backed by an immutable ledger. Client-generated <code>idempotencyKey</code> UUIDs guarantee network retries never double-charge.</li>
+      <li><strong>Database Sharding Strategy</strong>: Sharding database partitions by <code>city_id</code> (Geographic Sharding). 99.9% of intra-city trips stay inside a single shard, eliminating distributed cross-shard joins.</li>
+      <li><strong>Automated Test Verification</strong>: Authored test suite with <strong>23 automated integration tests</strong> passing in Jest covering RBAC, ownership, and WebSocket telemetry.</li>
+    </ul>
+
+    <div class="speech-box">
+      <div class="speech-title">Member 4 Viva Speech (30 Seconds):</div>
+      "I was responsible for Security, Database Sharding, and the Financial Ledger Architecture. I designed the bcrypt/JWT authentication with object-level ownership checks, the geographic database partitioning strategy by city, and the double-entry accounting ledger with idempotency keys for zero-duplicate financial transactions."
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 4: TOP 10 VIVA TRAP QUESTIONS & ANSWERS -->
+  <h2>4. Top 10 System Design Viva Questions &amp; Direct Answers</h2>
+
+  <div class="qa-box">
+    <div class="qa-question">Q1: "Why did you choose Uber H3 hexagons instead of Geohash or Google S2?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> In Geohash (square grid), diagonal neighbors are $\sqrt{2} \times$ farther than orthogonal neighbors, creating boundary distortion and directional bias. Uber H3's hexagonal grid has the unique property that all 6 neighboring cells are exactly equidistant from the center cell. This enables constant-time ($O(1)$) in-memory radius searches via <code>k-ring(3)</code> in under 0.5 ms.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q2: "What happens if two drivers accept a dynamic bid at the exact same millisecond?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> We prevent double-assignment through atomic database conditional mutations: <code>UPDATE rides SET driver_id = $id, status = 'ASSIGNED' WHERE id = $rideId AND status = 'BIDDING'</code>. The database row lock ensures only the first driver succeeds (returning 1 affected row), while the second driver receives 0 affected rows and an immediate 409 Conflict. In a multi-node deployment, this is protected by a Redis Redlock distributed lock on the ride ID.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q3: "Why WebSockets instead of HTTP Long Polling?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> HTTP Long Polling requires a full HTTP request/response handshake for every single location ping (~800 bytes of headers). At 333,000 pings/sec, HTTP headers alone would consume over 266 MB/s of bandwidth. WebSockets establish a single persistent TCP connection and transmit lightweight 2-byte frame headers, reducing network overhead by 90% and eliminating handshake latency.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q4: "How do you prevent a broadcast storm on your WebSocket gateway?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> We use room-based topic filtering (<code>subscribe_ride</code>). When a driver streams GPS coordinates, the server broadcasts exclusively to clients subscribed to that specific <code>rideId</code> (the passenger). The update is never broadcast globally to all connected clients.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q5: "How do you handle network disconnections and the Thundering Herd problem?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> On the server, heartbeat ping/pong every 30 seconds prunes half-open TCP connections. On the client, reconnection uses <strong>exponential backoff with randomized jitter</strong> ($1\text{s} \to 2\text{s} \to 4\text{s}$ up to $10\text{s}$). The jitter randomizes retry timings across reconnecting devices, preventing a recovering server from being overwhelmed by synchronized reconnect storms.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q6: "How do you guarantee a user is never charged twice during a payment or top-up?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> We enforce the <strong>Idempotency Pattern</strong>. Every financial request includes a unique client-generated UUID (<code>idempotencyKey</code>). The server checks if this key already exists in the immutable transaction ledger. If already processed, the server returns the existing transaction result immediately without re-debiting.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q7: "Why PostgreSQL over MongoDB for ride records and carpooling?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> Ride hailing and seat reservations require strict <strong>ACID transactional guarantees</strong> to prevent overbooking and phantom writes. PostgreSQL supports row-level locking (<code>SELECT ... FOR UPDATE</code>) and complex spatial polygon math via <strong>PostGIS</strong> (e.g. <code>ST_Buffer</code> and <code>ST_Contains</code>), which MongoDB cannot match natively with relational integrity.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q8: "How does your system scale horizontally when user volume increases?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> We shard the database horizontally by <strong><code>city_id</code> (Geographic Sharding)</strong>. 99.9% of urban intra-city rides, driver queries, and bids occur entirely within a single city boundary, ensuring zero distributed cross-shard joins. For the WebSocket tier, stateless gateway nodes are coordinated across instances via a Redis Pub/Sub backplane.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q9: "How does carpool corridor matching work mathematically?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> The driver's intercity road vector polyline $R$ is expanded into a 5,000-meter buffer polygon: $\text{Corridor} = \text{ST\_Buffer}(R, 5000)$. A passenger ride request is matched if and only if both the passenger pickup and dropoff coordinates are contained inside the corridor polygon: $\text{ST\_Contains}(\text{Corridor}, P_{\text{pickup}}) \land \text{ST\_Contains}(\text{Corridor}, P_{\text{drop}}) = \text{TRUE}$.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q10: "How do you prevent driver GPS spoofing?"</div>
+    <div class="qa-answer"><strong>Answer:</strong> Location updates are authenticated via JWT. The server verifies that the sending user possesses the <code>driver</code> role and is <strong>strictly assigned</strong> to the target ride (<code>ride.driverId === user.id</code>). Telemetry sent for unassigned, completed, or cancelled rides is immediately rejected.</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    RideX System Design Architecture Document &bull; Multi-Modal Mobility &amp; Dynamic Bidding Platform &bull; Academic Viva Final Submission
+  </div>
+
+</body>
+</html>

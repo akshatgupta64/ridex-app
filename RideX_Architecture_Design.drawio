@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-10-30T04:57:15.224Z" agent="RideX Architecture Designer" version="24.0.0" type="device">
+  <diagram id="HLD_PAGE" name="1. High-Level Architecture (HLD)">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1500" background="#F8FAFC" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="hld_title" value="&lt;b&gt;RideX Distributed Mobility Platform — High-Level Architecture (HLD)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#64748B&quot; style=&quot;font-size: 11px;&quot;&gt;Real-Time Intra-City Hailing (Rapido) • Dynamic Bidding Marketplace (inDrive) • Intercity Corridor Carpooling&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=#1E293B;fontFamily=Helvetica;fontSize=16;fontColor=#F8FAFC;align=left;spacingLeft=25;" parent="1" vertex="1">
+  <mxGeometry x="40" y="30" width="2320" height="60" as="geometry" />
+</mxCell>
+        <mxCell id="lane_clients" value="📱 Client &amp; Edge Tier" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="40" y="120" width="440" height="860" as="geometry" />
+</mxCell>
+        <mxCell id="client_rider_app" value="&lt;b&gt;Rider Mobile / Web App&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;React Native / React SPA&lt;br/&gt;• Custom Fare Proposals&lt;br/&gt;• Live Bid Evaluation&lt;br/&gt;• Real-time Driver GPS Map&lt;br/&gt;• Digital Wallet &amp; SOS&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#1E3A8A;align=left;spacingLeft=15;" parent="lane_clients" vertex="1">
+  <mxGeometry x="30" y="50" width="380" height="110" as="geometry" />
+</mxCell>
+        <mxCell id="client_driver_app" value="&lt;b&gt;Driver Partner App&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;React Native / Mobile App&lt;br/&gt;• 3-Second GPS Ingestion (WebSocket)&lt;br/&gt;• inDrive Counter-Bid Console&lt;br/&gt;• Turn-by-Turn Navigation (OSRM)&lt;br/&gt;• Earnings &amp; Settlement Ledger&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#78350F;align=left;spacingLeft=15;" parent="lane_clients" vertex="1">
+  <mxGeometry x="30" y="190" width="380" height="110" as="geometry" />
+</mxCell>
+        <mxCell id="client_carpool_user" value="&lt;b&gt;Intercity Carpool Traveler&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Web SPA / Mobile App&lt;br/&gt;• Intercity Route Search&lt;br/&gt;• Spatial Corridor Detour Check&lt;br/&gt;• Multi-Seat Booking Reservation&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#A855F7;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#581C87;align=left;spacingLeft=15;" parent="lane_clients" vertex="1">
+  <mxGeometry x="30" y="330" width="380" height="100" as="geometry" />
+</mxCell>
+        <mxCell id="client_admin_console" value="&lt;b&gt;Operations &amp; Admin Console&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Next.js / Tailwind Admin&lt;br/&gt;• Fleet Telemetry Visualizer&lt;br/&gt;• Dispute Settlement &amp; Audit&lt;br/&gt;• Geofence &amp; Pricing Controls&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#64748B;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#0F172A;align=left;spacingLeft=15;" parent="lane_clients" vertex="1">
+  <mxGeometry x="30" y="460" width="380" height="100" as="geometry" />
+</mxCell>
+        <mxCell id="client_edge_cdn" value="&lt;b&gt;Edge CDN &amp; DDoS Shield&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Cloudflare / AWS CloudFront&lt;br/&gt;• Anycast DNS &amp; Edge TLS 1.3&lt;br/&gt;• WAF &amp; Bot Mitigation&lt;br/&gt;• Static Asset Caching&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDFA;strokeColor=#0D9488;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#134E4A;align=left;spacingLeft=15;" parent="lane_clients" vertex="1">
+  <mxGeometry x="30" y="590" width="380" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="lane_gateway" value="🛡️ Ingress &amp; API Gateway Layer" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="520" y="120" width="380" height="860" as="geometry" />
+</mxCell>
+        <mxCell id="gw_load_balancer" value="&lt;b&gt;Envoy / NGINX Load Balancer&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;High-Throughput Layer 7 Proxy&lt;br/&gt;• HTTP/2 &amp; WSS Termination&lt;br/&gt;• Consistent Hashing on City ID&lt;br/&gt;• SSL/TLS Offloading&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#1E40AF;align=left;spacingLeft=15;" parent="lane_gateway" vertex="1">
+  <mxGeometry x="25" y="50" width="330" height="110" as="geometry" />
+</mxCell>
+        <mxCell id="gw_security_middleware" value="&lt;b&gt;Security &amp; Middleware Filter&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• X-Request-ID Correlation&lt;br/&gt;• Helmet Security Headers&lt;br/&gt;• Strict CORS Policy Enforcement&lt;br/&gt;• Token-Bucket Rate Limiter (300 req/min)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#EF4444;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#991B1B;align=left;spacingLeft=15;" parent="lane_gateway" vertex="1">
+  <mxGeometry x="25" y="190" width="330" height="110" as="geometry" />
+</mxCell>
+        <mxCell id="gw_auth_validator" value="&lt;b&gt;Authentication &amp; RBAC&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Stateless JWT Verification (HS256)&lt;br/&gt;• Role Enforcement: [Rider, Driver, Admin]&lt;br/&gt;• Resource Ownership Guard&lt;br/&gt;• Idempotency-Key Gatekeeper&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#713F12;align=left;spacingLeft=15;" parent="lane_gateway" vertex="1">
+  <mxGeometry x="25" y="330" width="330" height="110" as="geometry" />
+</mxCell>
+        <mxCell id="gw_ws_ingress" value="&lt;b&gt;WebSocket Connection Gateway&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Full-Duplex Persistent WSS Engine&lt;br/&gt;• 30-Second Heartbeat Ping/Pong&lt;br/&gt;• Room-Based Isolation (&lt;code&gt;subscribe_ride&lt;/code&gt;)&lt;br/&gt;• Zero Broadcast Storm Routing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#064E3B;align=left;spacingLeft=15;" parent="lane_gateway" vertex="1">
+  <mxGeometry x="25" y="470" width="330" height="110" as="geometry" />
+</mxCell>
+        <mxCell id="lane_services" value="⚙️ Core Microservices Application Tier (Node.js / Express)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="940" y="120" width="560" height="860" as="geometry" />
+</mxCell>
+        <mxCell id="svc_bidding" value="&lt;b&gt;inDrive Dynamic Bidding Engine&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;/api/rides/request&lt;/code&gt; • &lt;code&gt;/api/rides/:id/bid&lt;/code&gt; • &lt;code&gt;/api/rides/:id/accept-bid&lt;/code&gt;&lt;br/&gt;• Fare Bounds Validation [0.6x - 3.0x Base]&lt;br/&gt;• 25-Second Bid Expiry TTL&lt;br/&gt;• Atomic Lock Ride Claiming (Redlock + SQL)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#78350F;align=left;spacingLeft=15;" parent="lane_services" vertex="1">
+  <mxGeometry x="25" y="45" width="510" height="95" as="geometry" />
+</mxCell>
+        <mxCell id="svc_telemetry" value="&lt;b&gt;Real-Time Telemetry &amp; GPS Streamer&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;ws://.../ws&lt;/code&gt; • Event: &lt;code&gt;driver_location&lt;/code&gt;&lt;br/&gt;• Peak Ingestion: 666,666 QPS (64-byte payload)&lt;br/&gt;• Dead-Reckoning Extrapolation on packet loss&lt;br/&gt;• Anti-Spoofing &amp; Role-based Telemetry Guard&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#065F46;align=left;spacingLeft=15;" parent="lane_services" vertex="1">
+  <mxGeometry x="25" y="155" width="510" height="95" as="geometry" />
+</mxCell>
+        <mxCell id="svc_geo_routing" value="&lt;b&gt;Geospatial Indexing &amp; Routing Service&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;/api/rides/nearby-drivers&lt;/code&gt; • &lt;code&gt;/api/geo/route&lt;/code&gt;&lt;br/&gt;• Uber H3 Hexagonal Spatial Index (Res 8, 3km radius = k-ring 3)&lt;br/&gt;• Sub-0.5ms Spatial Radius Lookup&lt;br/&gt;• True Road Path Polyline via OSRM Graph Engine&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#581C87;align=left;spacingLeft=15;" parent="lane_services" vertex="1">
+  <mxGeometry x="25" y="265" width="510" height="95" as="geometry" />
+</mxCell>
+        <mxCell id="svc_carpooling" value="&lt;b&gt;Intercity Carpool Corridor Service&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;/api/carpools/publish&lt;/code&gt; • &lt;code&gt;/api/carpools/search&lt;/code&gt; • &lt;code&gt;/api/carpools/:id/book&lt;/code&gt;&lt;br/&gt;• PostGIS &lt;code&gt;ST_Buffer(route, 5000m)&lt;/code&gt; Polygon Generation&lt;br/&gt;• Detour Inclusion Math (&lt;code&gt;ST_Contains&lt;/code&gt;, Max 15% Detour)&lt;br/&gt;• Overbooking Prevention via Atomic Decrement&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#1E3A8A;align=left;spacingLeft=15;" parent="lane_services" vertex="1">
+  <mxGeometry x="25" y="375" width="510" height="95" as="geometry" />
+</mxCell>
+        <mxCell id="svc_wallet" value="&lt;b&gt;Financial Ledger &amp; Settlement Service&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;/api/wallet/balance&lt;/code&gt; • &lt;code&gt;/api/wallet/settle-ride&lt;/code&gt; • &lt;code&gt;/api/wallet/topup&lt;/code&gt;&lt;br/&gt;• Double-Entry Bookkeeping Ledger (Immutable Entries)&lt;br/&gt;• Driver Payout (85%) &amp; Platform Fee (15%) Split&lt;br/&gt;• Zero Double-Spend via Client &lt;code&gt;idempotencyKey&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDF2F8;strokeColor=#DB2777;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#831843;align=left;spacingLeft=15;" parent="lane_services" vertex="1">
+  <mxGeometry x="25" y="485" width="510" height="95" as="geometry" />
+</mxCell>
+        <mxCell id="svc_safety" value="&lt;b&gt;Safety Shield &amp; Verification Service&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;/api/rides/:id/verify-otp&lt;/code&gt; • &lt;code&gt;/api/contact/sos&lt;/code&gt;&lt;br/&gt;• Cryptographic 4-Digit Ride Start OTP Verification&lt;br/&gt;• One-Click Live SOS Web Link Generation&lt;br/&gt;• Automated Driver Identity &amp; License Verification&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#7F1D1D;align=left;spacingLeft=15;" parent="lane_services" vertex="1">
+  <mxGeometry x="25" y="595" width="510" height="95" as="geometry" />
+</mxCell>
+        <mxCell id="lane_cache_mq" value="⚡ Distributed Cache &amp; Message Broker" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1540" y="120" width="400" height="860" as="geometry" />
+</mxCell>
+        <mxCell id="mq_kafka" value="&lt;b&gt;Apache Kafka Event Streaming Cluster&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;High-Throughput Partitioned Event Log&lt;br/&gt;• Topic: &lt;code&gt;driver-locations&lt;/code&gt; (16 partitions)&lt;br/&gt;• Topic: &lt;code&gt;ride-requests-fanout&lt;/code&gt;&lt;br/&gt;• Topic: &lt;code&gt;bids-lifecycle&lt;/code&gt;&lt;br/&gt;• Topic: &lt;code&gt;wallet-settlements&lt;/code&gt;&lt;/font&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=20;fillColor=#EDE9FE;strokeColor=#7C3AED;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#4C1D95;align=left;spacingLeft=15;" parent="lane_cache_mq" vertex="1">
+  <mxGeometry x="25" y="50" width="350" height="120" as="geometry" />
+</mxCell>
+        <mxCell id="cache_redis_cluster" value="&lt;b&gt;Redis In-Memory Cluster &amp;amp; Pub/Sub&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Sub-Millisecond Read/Write Cache&lt;br/&gt;• Uber H3 Driver Geospatial Sets (&lt;code&gt;GEOADD / GEORADIUS&lt;/code&gt;)&lt;br/&gt;• Active Bids Hash (&lt;code&gt;TTL = 25s&lt;/code&gt;)&lt;br/&gt;• Redlock Distributed Mutex Manager (&lt;code&gt;lock:ride:{id}&lt;/code&gt;)&lt;br/&gt;• Realtime WebSocket Backplane Fabric&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#FEE2E2;strokeColor=#EF4444;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#991B1B;align=left;spacingLeft=15;" parent="lane_cache_mq" vertex="1">
+  <mxGeometry x="25" y="200" width="350" height="130" as="geometry" />
+</mxCell>
+        <mxCell id="cache_session" value="&lt;b&gt;Idempotency &amp; Token Store&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• &lt;code&gt;SET key val NX EX 86400&lt;/code&gt;&lt;br/&gt;• Rate Limit Token Buckets&lt;br/&gt;• Driver Ping Cooldown Flags&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#78350F;align=left;spacingLeft=15;" parent="lane_cache_mq" vertex="1">
+  <mxGeometry x="25" y="360" width="350" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="lane_persistence" value="🗄️ Persistence &amp; External Providers" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1980" y="120" width="380" height="860" as="geometry" />
+</mxCell>
+        <mxCell id="db_postgres_primary" value="&lt;b&gt;PostgreSQL + PostGIS (Primary)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Sharded by &lt;code&gt;city_id&lt;/code&gt; (Geographic Sharding)&lt;br/&gt;• ACID Relational Store&lt;br/&gt;• Spatial Engine (GIST Indexes, &lt;code&gt;ST_Buffer&lt;/code&gt;, &lt;code&gt;ST_Contains&lt;/code&gt;)&lt;br/&gt;• Tables: &lt;code&gt;users&lt;/code&gt;, &lt;code&gt;rides&lt;/code&gt;, &lt;code&gt;ride_bids&lt;/code&gt;, &lt;code&gt;carpools&lt;/code&gt;, &lt;code&gt;wallet_ledger&lt;/code&gt;&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#DBEAFE;strokeColor=#1D4ED8;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#1E3A8A;align=left;spacingLeft=15;" parent="lane_persistence" vertex="1">
+  <mxGeometry x="25" y="50" width="330" height="140" as="geometry" />
+</mxCell>
+        <mxCell id="db_postgres_replica" value="&lt;b&gt;PostgreSQL Read Replicas (x3)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Cross-AZ Read-Only Pool&lt;br/&gt;• High Throughput Ride Search&lt;br/&gt;• Historical Profile &amp; Trip Queries&lt;br/&gt;• Streaming WAL Replication (&lt; 50ms lag)&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#E0E7FF;strokeColor=#4338CA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#312E81;align=left;spacingLeft=15;" parent="lane_persistence" vertex="1">
+  <mxGeometry x="25" y="215" width="330" height="110" as="geometry" />
+</mxCell>
+        <mxCell id="ext_osrm" value="&lt;b&gt;OSRM / Mapbox Road API&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Real Road Network Graph&lt;br/&gt;• Polyline Geometry &amp; Distance&lt;br/&gt;• Live Traffic Duration Routing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#7E22CE;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#581C87;align=left;spacingLeft=15;" parent="lane_persistence" vertex="1">
+  <mxGeometry x="25" y="350" width="330" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="ext_payment" value="&lt;b&gt;Payment Gateway (Stripe / UPI)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Webhook Notifications&lt;br/&gt;• Automated Escrow &amp; Payouts&lt;br/&gt;• 3DS Secure Card &amp; UPI Rail&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#14532D;align=left;spacingLeft=15;" parent="lane_persistence" vertex="1">
+  <mxGeometry x="25" y="460" width="330" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="ext_sms_fcm" value="&lt;b&gt;Twilio SMS &amp; FCM Push&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Real-Time Push Notifications&lt;br/&gt;• Safety OTP via High-Priority SMS&lt;br/&gt;• Emergency SOS Broadcasts&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#C2410C;strokeWidth=1.5;fontFamily=Helvetica;fontSize=12;fontColor=#7C2D12;align=left;spacingLeft=15;" parent="lane_persistence" vertex="1">
+  <mxGeometry x="25" y="570" width="330" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="edge_2" value="HTTPS / WSS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="client_rider_app" target="gw_load_balancer" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_3" value="WSS (GPS 3s)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="client_driver_app" target="gw_load_balancer" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_4" value="REST API" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="client_carpool_user" target="gw_load_balancer" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_5" value="Filter Chain" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="gw_load_balancer" target="gw_security_middleware" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_6" value="Authorized" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="gw_security_middleware" target="gw_auth_validator" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_7" value="WS Upgrade" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="gw_auth_validator" target="gw_ws_ingress" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_8" value="REST" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="gw_auth_validator" target="svc_bidding" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_9" value="WSS Events" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="gw_ws_ingress" target="svc_telemetry" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_10" value="Spatial Req" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="gw_auth_validator" target="svc_geo_routing" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_11" value="Corridor Req" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="gw_auth_validator" target="svc_carpooling" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_12" value="Ledger Req" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="gw_auth_validator" target="svc_wallet" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_13" value="Redlock / TTL 25s" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_bidding" target="cache_redis_cluster" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_14" value="666k QPS Ingestion" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_telemetry" target="mq_kafka" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_15" value="H3 Spatial Sets" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_telemetry" target="cache_redis_cluster" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_16" value="k-ring(3) Query" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_geo_routing" target="cache_redis_cluster" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_17" value="Atomic State Commit" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_bidding" target="db_postgres_primary" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_18" value="PostGIS ST_Buffer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_carpooling" target="db_postgres_primary" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_19" value="Ledger Audit Write" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_wallet" target="db_postgres_primary" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_20" value="Polyline Calc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_geo_routing" target="ext_osrm" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_21" value="Payout / Topup" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_wallet" target="ext_payment" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_22" value="High-Priority OTP" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="svc_safety" target="ext_sms_fcm" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_23" value="WAL Replication" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="db_postgres_primary" target="db_postgres_replica" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="LLD_PAGE" name="2. Low-Level Component Architecture (LLD)">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1500" background="#F8FAFC" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lld_title" value="&lt;b&gt;RideX Platform — Low-Level Component Architecture (LLD) &amp; Design Patterns&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#64748B&quot; style=&quot;font-size: 11px;&quot;&gt;Internal Class Structures, Concurrency Mutexes, Room Isolation Engine, Spatial Index Algorithms &amp;amp; ACID Ledger Handlers&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=#1E293B;fontFamily=Helvetica;fontSize=16;fontColor=#F8FAFC;align=left;spacingLeft=25;" parent="1" vertex="1">
+  <mxGeometry x="40" y="30" width="2320" height="60" as="geometry" />
+</mxCell>
+        <mxCell id="lld_box_security" value="1. Ingress &amp; Security Pipeline (server/middleware/)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="40" y="120" width="520" height="580" as="geometry" />
+</mxCell>
+        <mxCell id="lld_req_id" value="&lt;b&gt;requestId Middleware (security.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;req.id = req.headers[&quot;x-request-id&quot;] || crypto.randomUUID()&lt;/code&gt;&lt;br/&gt;Attaches correlation ID to response headers and log traces&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=12;" parent="lld_box_security" vertex="1">
+  <mxGeometry x="20" y="45" width="480" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_sec_headers" value="&lt;b&gt;securityHeaders &amp;amp; CORS (security.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• &lt;code&gt;X-Content-Type-Options: nosniff&lt;/code&gt;&lt;br/&gt;• &lt;code&gt;X-Frame-Options: DENY&lt;/code&gt;, Strict CSP Policy&lt;br/&gt;• Origin Validation &amp;amp; &lt;code&gt;Access-Control-Allow-Credentials&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#EF4444;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#991B1B;align=left;spacingLeft=12;" parent="lld_box_security" vertex="1">
+  <mxGeometry x="20" y="135" width="480" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_rate_limiter" value="&lt;b&gt;rateLimiter Memory/Redis Bucket (security.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Sliding Window Counter: &lt;code&gt;windowMs = 60000, max = 300&lt;/code&gt;&lt;br/&gt;Prunes expired buckets every 60s; returns &lt;code&gt;HTTP 429 Too Many Requests&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#713F12;align=left;spacingLeft=12;" parent="lld_box_security" vertex="1">
+  <mxGeometry x="20" y="225" width="480" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_jwt_auth" value="&lt;b&gt;authenticateToken &amp;amp; requireRole (middleware/auth.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Extracts &lt;code&gt;Bearer &amp;lt;token&amp;gt;&lt;/code&gt; &amp;amp; decodes with &lt;code&gt;JWT_SECRET&lt;/code&gt;&lt;br/&gt;• Role Guard: &lt;code&gt;requireRole(&quot;driver&quot;)&lt;/code&gt;, &lt;code&gt;requireRole(&quot;rider&quot;)&lt;/code&gt;&lt;br/&gt;• Rejects forged tokens with &lt;code&gt;HTTP 401 Unauthorized&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=12;" parent="lld_box_security" vertex="1">
+  <mxGeometry x="20" y="315" width="480" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_ownership_guard" value="&lt;b&gt;Resource Ownership Guard (middleware/auth.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Verifies &lt;code&gt;ride.riderId === req.user.id || ride.driverId === req.user.id&lt;/code&gt;&lt;br/&gt;Prevents unauthorized modification or cancellation (returns &lt;code&gt;HTTP 403 Forbidden&lt;/code&gt;)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#581C87;align=left;spacingLeft=12;" parent="lld_box_security" vertex="1">
+  <mxGeometry x="20" y="415" width="480" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_box_ws" value="2. Real-Time WebSocket Engine (services/websocket.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="600" y="120" width="560" height="580" as="geometry" />
+</mxCell>
+        <mxCell id="lld_ws_init" value="&lt;b&gt;initWebSocketServer(httpServer)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Upgrades HTTP at &lt;code&gt;/ws&lt;/code&gt; path; handles connection tracking &amp;amp; graceful shutdown&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=12;" parent="lld_box_ws" vertex="1">
+  <mxGeometry x="25" y="45" width="510" height="60" as="geometry" />
+</mxCell>
+        <mxCell id="lld_ws_rooms" value="&lt;b&gt;Room Pub/Sub Isolator (Zero-Storm Architecture)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;rideRooms = Map&amp;lt;rideId, Set&amp;lt;WebSocket&amp;gt;&amp;gt;&lt;/code&gt;&lt;br/&gt;&lt;code&gt;subscribeToRide(ws, rideId)&lt;/code&gt; &amp;amp; &lt;code&gt;unsubscribeFromRide(ws, rideId)&lt;/code&gt;&lt;br/&gt;Events are sent ONLY to subscribed riders &amp;amp; drivers ($O(1)$ delivery vs $O(N)$ flood)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=12;" parent="lld_box_ws" vertex="1">
+  <mxGeometry x="25" y="120" width="510" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_ws_heartbeat" value="&lt;b&gt;Connection Lifecycle &amp;amp; Heartbeat Pruner&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• 30-Second Ping/Pong sweep terminates dead / half-open TCP sockets&lt;br/&gt;• Client Reconnect: Exponential backoff with jitter (1s &amp;rarr; 2s &amp;rarr; 4s up to 10s)&lt;br/&gt;• Mitigates Thundering Herd crashes during server restart&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#EF4444;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#991B1B;align=left;spacingLeft=12;" parent="lld_box_ws" vertex="1">
+  <mxGeometry x="25" y="220" width="510" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_ws_broadcast" value="&lt;b&gt;Event Dispatchers (Broadcast Functions)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• &lt;code&gt;broadcastDriverLocation(rideId, locationData)&lt;/code&gt;&lt;br/&gt;• &lt;code&gt;broadcastRideStatus(rideId, status, extra)&lt;/code&gt;&lt;br/&gt;• &lt;code&gt;broadcastBidUpdate(rideId, bidData)&lt;/code&gt;&lt;br/&gt;• &lt;code&gt;broadcastChatMessage(rideId, messagePayload)&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#78350F;align=left;spacingLeft=12;" parent="lld_box_ws" vertex="1">
+  <mxGeometry x="25" y="320" width="510" height="95" as="geometry" />
+</mxCell>
+        <mxCell id="lld_ws_gps_sim" value="&lt;b&gt;Driver GPS Route Simulator (simulate_driver_gps.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Interpolates coordinates along OSRM waypoint polyline at 3s intervals;&lt;br/&gt;Emits speed, heading, and distance to destination for live tracking&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#581C87;align=left;spacingLeft=12;" parent="lld_box_ws" vertex="1">
+  <mxGeometry x="25" y="430" width="510" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_box_bidding" value="3. inDrive Bidding Engine &amp;amp; State Machine (routes/rides.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1200" y="120" width="560" height="580" as="geometry" />
+</mxCell>
+        <mxCell id="lld_fsm_engine" value="&lt;b&gt;Ride Lifecycle Finite State Machine (FSM)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Strict Progression: &lt;code&gt;REQUESTED &amp;rarr; BIDDING &amp;rarr; ASSIGNED &amp;rarr; IN_PROGRESS &amp;rarr; COMPLETED / CANCELLED&lt;/code&gt;&lt;br/&gt;Enforces server-side transition guards; invalid jumps return &lt;code&gt;HTTP 400 Bad Request&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#713F12;align=left;spacingLeft=12;" parent="lld_box_bidding" vertex="1">
+  <mxGeometry x="25" y="45" width="510" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_fare_bounds" value="&lt;b&gt;Fare Estimation &amp;amp; Offer Bounds Validator&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Baseline Fare = &lt;code&gt;Base_Rate + (Distance_km &amp;times; Rate_Per_Km)&lt;/code&gt;&lt;br/&gt;• Vehicle Factors: Bike (1.0x), Auto (1.3x), Cab Economy (1.8x), Parcel (0.9x)&lt;br/&gt;• Dynamic Offer Constraint: &lt;code&gt;0.6 &amp;times; Base_Fare &amp;le; Offer &amp;le; 3.0 &amp;times; Base_Fare&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=12;" parent="lld_box_bidding" vertex="1">
+  <mxGeometry x="25" y="135" width="510" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_bid_collector" value="&lt;b&gt;Driver Counter-Bid Collector (25s Window)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Drivers receive ride push in H3 radius and submit counter-offers&lt;br/&gt;• Stored in Redis Hash: &lt;code&gt;HSET ride:bids:{ride_id} {driver_id} {payload}&lt;/code&gt;&lt;br/&gt;• Expired bids purged automatically; passenger sees live sorted ranking&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#78350F;align=left;spacingLeft=12;" parent="lld_box_bidding" vertex="1">
+  <mxGeometry x="25" y="235" width="510" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_redlock_mutex" value="&lt;b&gt;Redlock Mutex &amp;amp; Atomic Conditional Assignment&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Prevents double-claim race condition when rider accepts a bid:&lt;br/&gt;1. Acquire Redis Mutex &lt;code&gt;lock:ride:{rideId}&lt;/code&gt; (TTL 5s)&lt;br/&gt;2. Conditional SQL: &lt;code&gt;UPDATE rides SET driver_id=$id, status=&apos;ASSIGNED&apos; WHERE id=$rideId AND status=&apos;BIDDING&apos;&lt;/code&gt;&lt;br/&gt;3. Invalidate remaining counter-bids &amp;amp; release Redlock&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#7F1D1D;align=left;spacingLeft=12;" parent="lld_box_bidding" vertex="1">
+  <mxGeometry x="25" y="335" width="510" height="105" as="geometry" />
+</mxCell>
+        <mxCell id="lld_otp_validator" value="&lt;b&gt;Ride Security OTP Verification (rides.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Driver must enter 4-digit OTP provided by rider to begin trip:&lt;br/&gt;Transitions status to &lt;code&gt;IN_PROGRESS&lt;/code&gt;; fails after 3 bad attempts&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=12;" parent="lld_box_bidding" vertex="1">
+  <mxGeometry x="25" y="455" width="510" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_box_geo" value="4. Geospatial &amp; Carpool Corridor Engine (services/routing.js &amp; carpools.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1800" y="120" width="560" height="580" as="geometry" />
+</mxCell>
+        <mxCell id="lld_uber_h3" value="&lt;b&gt;Uber H3 Hexagonal Spatial Indexer&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Resolution 8: Average edge length = 461m, area = 0.737 km²&lt;br/&gt;• 3km Search Radius = &lt;code&gt;k-ring(3)&lt;/code&gt; (37 uniform cells, 0.5ms lookup)&lt;br/&gt;• Eliminates Geohash $\sqrt{2}$ diagonal distortion and edge boundary errors&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#581C87;align=left;spacingLeft=12;" parent="lld_box_geo" vertex="1">
+  <mxGeometry x="25" y="45" width="510" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_osrm_engine" value="&lt;b&gt;OSRM Road Routing Engine (services/routing.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• &lt;code&gt;getRouteWaypoints(origin, destination)&lt;/code&gt;&lt;br/&gt;• Decodes OpenStreetMap highway graph into step coordinates &amp;amp; ETA&lt;br/&gt;• Real road geometry vs straight-line Haversine approximation&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=12;" parent="lld_box_geo" vertex="1">
+  <mxGeometry x="25" y="145" width="510" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_postgis_buffer" value="&lt;b&gt;PostGIS Spatial Corridor Buffer (ST_Buffer)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Intercity Highway Polyline $R$ is expanded into a 5km corridor polygon:&lt;br/&gt;&lt;code&gt;Corridor = ST_Buffer(ST_GeomFromText(R), 5000)&lt;/code&gt;&lt;br/&gt;Matches travelers whose pickup and drop points both lie inside polygon&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#78350F;align=left;spacingLeft=12;" parent="lld_box_geo" vertex="1">
+  <mxGeometry x="25" y="245" width="510" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_detour_filter" value="&lt;b&gt;Spatial Containment &amp;amp; Detour Ratio Filter&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Constraint: &lt;code&gt;ST_Contains(Corridor, P_pickup) AND ST_Contains(Corridor, P_drop)&lt;/code&gt;&lt;br/&gt;• Detour Cap: Total path $(P_{orig} &amp;rarr; P_{pick} &amp;rarr; P_{drop} &amp;rarr; P_{dest}) &amp;le; 1.15 &amp;times; Dist_{direct}$&lt;br/&gt;• Protects drivers from unreasonable route excursions&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=12;" parent="lld_box_geo" vertex="1">
+  <mxGeometry x="25" y="345" width="510" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="lld_seat_decrement" value="&lt;b&gt;Atomic Seat Inventory Decrement (carpools.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Zero-overbooking guarantee:&lt;br/&gt;&lt;code&gt;UPDATE carpools SET available_seats = available_seats - $seats WHERE id = $id AND available_seats &amp;gt;= $seats&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#7F1D1D;align=left;spacingLeft=12;" parent="lld_box_geo" vertex="1">
+  <mxGeometry x="25" y="445" width="510" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_box_ledger" value="5. Double-Entry Financial Ledger &amp;amp; Idempotency Coordinator (routes/wallet.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="40" y="730" width="1120" height="350" as="geometry" />
+</mxCell>
+        <mxCell id="lld_idempotency_gate" value="&lt;b&gt;Idempotency Coordinator (idempotencyKey)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Client generates unique UUID &lt;code&gt;idempotencyKey&lt;/code&gt;.&lt;br/&gt;Server checks &lt;code&gt;SELECT entry_id FROM wallet_ledger WHERE idempotency_key = $key&lt;/code&gt;.&lt;br/&gt;If found, cached result is returned immediately without duplicate mutation.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=12;" parent="lld_box_ledger" vertex="1">
+  <mxGeometry x="30" y="50" width="500" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="lld_split_calculator" value="&lt;b&gt;Fare Settlement &amp;amp; Platform Commission Engine&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Driver Share: 85% of agreed fare + 100% of voluntary tip&lt;br/&gt;• Platform Fee: 15% platform commission&lt;br/&gt;• Atomic Wallet Debit (Rider) + Wallet Credit (Driver) within single transaction&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#78350F;align=left;spacingLeft=12;" parent="lld_box_ledger" vertex="1">
+  <mxGeometry x="580" y="50" width="500" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="lld_immutable_ledger" value="&lt;b&gt;Immutable Double-Entry Ledger Schema&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;wallet_ledger (entry_id, wallet_id, ride_id, type [CREDIT|DEBIT|REFUND], amount, idempotency_key, created_at)&lt;/code&gt;&lt;br/&gt;Append-only ledger guarantees mathematical auditability and prevents phantom balances&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=12;" parent="lld_box_ledger" vertex="1">
+  <mxGeometry x="30" y="160" width="1050" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="lld_box_dal" value="6. Data Access Layer &amp;amp; Sharding Strategy (server/db.js &amp;amp; PostgreSQL)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1200" y="730" width="1160" height="350" as="geometry" />
+</mxCell>
+        <mxCell id="lld_db_wrapper" value="&lt;b&gt;Database Access Wrapper (server/db.js)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Thread-safe JSON Store with atomic filesystem locking &amp;amp; backup recovery&lt;br/&gt;• Seamless drop-in interface for PostgreSQL Connection Pool (&lt;code&gt;pg.Pool&lt;/code&gt;)&lt;br/&gt;• Automated schema migrations &amp;amp; seed generation for testing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=12;" parent="lld_box_dal" vertex="1">
+  <mxGeometry x="30" y="50" width="520" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="lld_geo_sharding" value="&lt;b&gt;Geographic Database Sharding (by city_id)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;• Sharding Key: &lt;code&gt;city_id&lt;/code&gt; (e.g. BLR, DEL, HYD, MUM)&lt;br/&gt;• 99.9% of intra-city trips stay inside a single database node&lt;br/&gt;• Eliminates expensive distributed cross-shard 2-Phase Commits (2PC)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#7E22CE;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#581C87;align=left;spacingLeft=12;" parent="lld_box_dal" vertex="1">
+  <mxGeometry x="600" y="50" width="520" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="lld_spatial_indexes" value="&lt;b&gt;PostGIS Spatial Index Optimization&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;CREATE INDEX idx_rides_pickup_spatial ON rides USING GIST(pickup_geom);&lt;/code&gt;&lt;br/&gt;&lt;code&gt;CREATE INDEX idx_carpools_spatial ON carpools USING GIST(route_geom);&lt;/code&gt;&lt;br/&gt;Enables R-Tree bounding box pruning for instant geospatial filtering&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#EF4444;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#991B1B;align=left;spacingLeft=12;" parent="lld_box_dal" vertex="1">
+  <mxGeometry x="30" y="160" width="1090" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="edge_2" value="Decoded User" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="lld_jwt_auth" target="lld_ownership_guard" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_3" value="Connection Pool" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="lld_ws_init" target="lld_ws_rooms" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_4" value="Room Target" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="lld_ws_rooms" target="lld_ws_broadcast" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_5" value="Status Guard" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="lld_fsm_engine" target="lld_redlock_mutex" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_6" value="Conditional Write" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="lld_redlock_mutex" target="lld_db_wrapper" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_7" value="Valid Match" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="lld_detour_filter" target="lld_seat_decrement" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_8" value="Unprocessed UUID" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="lld_idempotency_gate" target="lld_split_calculator" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="edge_9" value="Double-Entry Post" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;" parent="1" source="lld_split_calculator" target="lld_immutable_ledger" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="FUNCTIONS_PAGE" name="3. Functions &amp; Microservices Catalog">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1500" background="#F8FAFC" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="fns_title" value="&lt;b&gt;RideX Platform — Functions, Microservices &amp;amp; API Data Contracts&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#64748B&quot; style=&quot;font-size: 11px;&quot;&gt;Exhaustive Catalog of REST API Endpoints, WebSocket Protocol Events, Backend Service Handlers &amp;amp; Payload Contracts&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=#1E293B;fontFamily=Helvetica;fontSize=16;fontColor=#F8FAFC;align=left;spacingLeft=25;" parent="1" vertex="1">
+  <mxGeometry x="40" y="30" width="2320" height="60" as="geometry" />
+</mxCell>
+        <mxCell id="col_auth" value="1. Authentication &amp;amp; User Service (routes/auth.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="40" y="120" width="440" height="960" as="geometry" />
+</mxCell>
+        <mxCell id="fn_register" value="&lt;b&gt;POST /api/auth/register&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ name, email, password, role, phone, vehicleType }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Validates email uniqueness &amp;rarr; Hashes password with bcrypt (10 rounds) &amp;rarr; Persists user &amp;rarr; Issues JWT token.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ token, user: { id, name, role } }&lt;/code&gt; (201 Created)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=10;" parent="col_auth" vertex="1">
+  <mxGeometry x="20" y="50" width="400" height="115" as="geometry" />
+</mxCell>
+        <mxCell id="fn_login" value="&lt;b&gt;POST /api/auth/login&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ email, password }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Look up user &amp;rarr; &lt;code&gt;bcrypt.compare(password, hash)&lt;/code&gt; &amp;rarr; Signs HS256 JWT containing &lt;code&gt;{ id, email, role }&lt;/code&gt;.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ token, user }&lt;/code&gt; (200 OK) / (401 Invalid Credentials)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#713F12;align=left;spacingLeft=10;" parent="col_auth" vertex="1">
+  <mxGeometry x="20" y="180" width="400" height="115" as="geometry" />
+</mxCell>
+        <mxCell id="fn_profile" value="&lt;b&gt;GET /api/auth/profile&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Headers:&lt;/b&gt; &lt;code&gt;Authorization: Bearer &amp;lt;JWT&amp;gt;&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Verifies token &amp;rarr; Fetches sanitized profile (excluding passwordHash) with active ride details &amp;amp; wallet balance.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ user, walletBalance, activeRide }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=10;" parent="col_auth" vertex="1">
+  <mxGeometry x="20" y="310" width="400" height="105" as="geometry" />
+</mxCell>
+        <mxCell id="fn_bcrypt_helper" value="&lt;b&gt;Helper: hashPassword() &amp;amp; comparePassword()&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;server/utils/auth.js&lt;/code&gt;&lt;br/&gt;• &lt;code&gt;bcrypt.hash(plainText, 10)&lt;/code&gt;&lt;br/&gt;• Constant-time verification against timing attacks&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1;fontFamily=Helvetica;fontSize=11;fontColor=#581C87;align=left;spacingLeft=10;" parent="col_auth" vertex="1">
+  <mxGeometry x="20" y="430" width="400" height="80" as="geometry" />
+</mxCell>
+        <mxCell id="col_rides" value="2. Ride &amp;amp; Dynamic Bidding Service (routes/rides.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="510" y="120" width="460" height="960" as="geometry" />
+</mxCell>
+        <mxCell id="fn_req_ride" value="&lt;b&gt;POST /api/rides/request&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ pickup, drop, vehicleType, offerFare }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Validates fare within [0.6x - 3.0x base] &amp;rarr; Generates 4-digit OTP &amp;rarr; Sets status = &apos;BIDDING&apos; &amp;rarr; Dispatches live event to drivers in Uber H3 radius.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ rideId, status: &quot;BIDDING&quot;, otp }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#78350F;align=left;spacingLeft=10;" parent="col_rides" vertex="1">
+  <mxGeometry x="20" y="50" width="420" height="115" as="geometry" />
+</mxCell>
+        <mxCell id="fn_submit_bid" value="&lt;b&gt;POST /api/rides/:id/bid&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ price, etaMins }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Driver submits counter-bid &amp;rarr; Verifies driver role &amp;rarr; Saves bid into Redis with 25s TTL &amp;rarr; Notifies passenger via WebSocket &lt;code&gt;driver_bid&lt;/code&gt;.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ success: true, bidId }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=10;" parent="col_rides" vertex="1">
+  <mxGeometry x="20" y="180" width="420" height="110" as="geometry" />
+</mxCell>
+        <mxCell id="fn_accept_bid" value="&lt;b&gt;POST /api/rides/:id/accept-bid&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ bidId, driverId, agreedFare }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Acquires Redlock mutex &amp;rarr; Conditional SQL transition &lt;code&gt;status = &apos;ASSIGNED&apos;&lt;/code&gt; &amp;rarr; Broadcasts &lt;code&gt;bid_accepted&lt;/code&gt; to room &amp;rarr; Invalidates other bids.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ success: true, assignedDriver }&lt;/code&gt; (409 if already claimed)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#7F1D1D;align=left;spacingLeft=10;" parent="col_rides" vertex="1">
+  <mxGeometry x="20" y="305" width="420" height="120" as="geometry" />
+</mxCell>
+        <mxCell id="fn_verify_otp" value="&lt;b&gt;POST /api/rides/:id/verify-otp&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ otp }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Driver enters OTP &amp;rarr; Matches ride OTP on server &amp;rarr; Transitions &lt;code&gt;status = &apos;IN_PROGRESS&apos;&lt;/code&gt; &amp;rarr; Starts GPS tracker stream.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ success: true, status: &quot;IN_PROGRESS&quot; }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=10;" parent="col_rides" vertex="1">
+  <mxGeometry x="20" y="440" width="420" height="105" as="geometry" />
+</mxCell>
+        <mxCell id="fn_complete_ride" value="&lt;b&gt;POST /api/rides/:id/complete&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ finalDistance, tipAmount }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Validates driver ownership &amp;rarr; Transitions &lt;code&gt;status = &apos;COMPLETED&apos;&lt;/code&gt; &amp;rarr; Triggers wallet ledger settlement &amp;rarr; Emits completion event.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ success: true, receipt }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#581C87;align=left;spacingLeft=10;" parent="col_rides" vertex="1">
+  <mxGeometry x="20" y="560" width="420" height="105" as="geometry" />
+</mxCell>
+        <mxCell id="col_ws_events" value="3. Real-Time WebSocket Protocols (services/websocket.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1000" y="120" width="440" height="960" as="geometry" />
+</mxCell>
+        <mxCell id="ws_msg_sub" value="&lt;b&gt;CLIENT &amp;rarr; SERVER: subscribe_ride&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;{ type: &quot;subscribe_ride&quot;, rideId, token }&lt;/code&gt;&lt;br/&gt;Registers client socket into &lt;code&gt;rideRooms.get(rideId)&lt;/code&gt;; verifies user belongs to this trip.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=10;" parent="col_ws_events" vertex="1">
+  <mxGeometry x="20" y="50" width="400" height="95" as="geometry" />
+</mxCell>
+        <mxCell id="ws_msg_loc" value="&lt;b&gt;CLIENT &amp;rarr; SERVER: driver_location&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;{ type: &quot;driver_location&quot;, rideId, lat, lng, bearing, speed }&lt;/code&gt;&lt;br/&gt;Validates active trip &amp;rarr; Updates Redis spatial cache &amp;rarr; Dispatches immediately to rider socket in room.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=10;" parent="col_ws_events" vertex="1">
+  <mxGeometry x="20" y="160" width="400" height="100" as="geometry" />
+</mxCell>
+        <mxCell id="ws_msg_bid_event" value="&lt;b&gt;SERVER &amp;rarr; CLIENT: new_bid &amp;amp; bid_accepted&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;{ type: &quot;new_bid&quot;, bid: { driverId, price, eta, rating } }&lt;/code&gt;&lt;br/&gt;Pushed to passenger in real-time without polling overhead.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#78350F;align=left;spacingLeft=10;" parent="col_ws_events" vertex="1">
+  <mxGeometry x="20" y="275" width="400" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="ws_msg_status" value="&lt;b&gt;SERVER &amp;rarr; CLIENT: ride_status_changed&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;{ type: &quot;ride_status_changed&quot;, rideId, status, timestamp }&lt;/code&gt;&lt;br/&gt;Synchronizes UI screens across passenger and driver simultaneously.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#581C87;align=left;spacingLeft=10;" parent="col_ws_events" vertex="1">
+  <mxGeometry x="20" y="380" width="400" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="ws_msg_ping" value="&lt;b&gt;BIDIRECTIONAL: ping / pong Heartbeat&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;{ type: &quot;ping&quot; } &amp;harr; { type: &quot;pong&quot; }&lt;/code&gt;&lt;br/&gt;Maintains stateful TCP tunnel across mobile carriers and NAT gateways.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#EF4444;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#991B1B;align=left;spacingLeft=10;" parent="col_ws_events" vertex="1">
+  <mxGeometry x="20" y="485" width="400" height="80" as="geometry" />
+</mxCell>
+        <mxCell id="col_carpools" value="4. Intercity Carpooling Service (routes/carpools.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1470" y="120" width="440" height="960" as="geometry" />
+</mxCell>
+        <mxCell id="fn_publish_carpool" value="&lt;b&gt;POST /api/carpools/publish&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ fromCity, toCity, departureTime, totalSeats, pricePerSeat, carModel }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Calls OSRM to generate polyline $R$ &amp;rarr; Generates PostGIS buffer &lt;code&gt;ST_Buffer(R, 5000)&lt;/code&gt; &amp;rarr; Persists active corridor.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ carpoolId, corridorId }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=10;" parent="col_carpools" vertex="1">
+  <mxGeometry x="20" y="50" width="400" height="125" as="geometry" />
+</mxCell>
+        <mxCell id="fn_search_carpool" value="&lt;b&gt;GET /api/carpools/search?from=..&amp;amp;to=..&amp;amp;date=..&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Query Filters:&lt;/b&gt; Origin, Destination, Departure Window.&lt;br/&gt;&lt;b&gt;Corridor Spatial Match:&lt;/b&gt; Evaluates &lt;code&gt;ST_Contains(corridor, pickup) AND ST_Contains(corridor, drop)&lt;/code&gt; &amp;amp; checks detour &amp;le; 15%.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ carpools: [...] }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=10;" parent="col_carpools" vertex="1">
+  <mxGeometry x="20" y="190" width="400" height="115" as="geometry" />
+</mxCell>
+        <mxCell id="fn_book_carpool" value="&lt;b&gt;POST /api/carpools/:id/book&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ seatsBooked, idempotencyKey }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Atomic conditional SQL update &lt;code&gt;available_seats = available_seats - $seats WHERE available_seats &amp;gt;= $seats&lt;/code&gt;.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ bookingId, confirmedSeats }&lt;/code&gt; (409 if full)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#7F1D1D;align=left;spacingLeft=10;" parent="col_carpools" vertex="1">
+  <mxGeometry x="20" y="320" width="400" height="115" as="geometry" />
+</mxCell>
+        <mxCell id="col_wallet_geo" value="5. Wallet Ledger &amp;amp; Geo Services (wallet.js &amp;amp; geo.js)" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1940" y="120" width="420" height="960" as="geometry" />
+</mxCell>
+        <mxCell id="fn_wallet_balance" value="&lt;b&gt;GET /api/wallet/balance&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Logic:&lt;/b&gt; Returns verified balance and recent ledger history for authenticated user.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ balance, currency: &quot;INR&quot;, transactions: [...] }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#713F12;align=left;spacingLeft=10;" parent="col_wallet_geo" vertex="1">
+  <mxGeometry x="20" y="50" width="380" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="fn_wallet_topup" value="&lt;b&gt;POST /api/wallet/topup&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ amount, idempotencyKey }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Validates idempotency key &amp;rarr; Inserts CREDIT ledger row &amp;rarr; Increments balance.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ success: true, newBalance }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#1E3A8A;align=left;spacingLeft=10;" parent="col_wallet_geo" vertex="1">
+  <mxGeometry x="20" y="155" width="380" height="100" as="geometry" />
+</mxCell>
+        <mxCell id="fn_wallet_settle" value="&lt;b&gt;POST /api/wallet/settle-ride&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ rideId, fare, tip, idempotencyKey }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Debits rider wallet &amp;rarr; Credits driver wallet 85% fare + tip &amp;rarr; Credits platform 15%.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ settled: true, transactionId }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#064E3B;align=left;spacingLeft=10;" parent="col_wallet_geo" vertex="1">
+  <mxGeometry x="20" y="270" width="380" height="105" as="geometry" />
+</mxCell>
+        <mxCell id="fn_geo_route" value="&lt;b&gt;POST /api/geo/route&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Params:&lt;/b&gt; &lt;code&gt;{ origin, destination }&lt;/code&gt;&lt;br/&gt;&lt;b&gt;Logic:&lt;/b&gt; Queries OSRM road graph &amp;rarr; Returns true driving distance, duration, and GeoJSON polyline.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ distanceKm, durationMins, polyline }&lt;/code&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#581C87;align=left;spacingLeft=10;" parent="col_wallet_geo" vertex="1">
+  <mxGeometry x="20" y="390" width="380" height="105" as="geometry" />
+</mxCell>
+        <mxCell id="fn_health" value="&lt;b&gt;GET /api/health&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;b&gt;Logic:&lt;/b&gt; Verifies database read, WebSocket state, and subsystems health.&lt;br/&gt;&lt;b&gt;Response:&lt;/b&gt; &lt;code&gt;{ status: &quot;HEALTHY&quot;, uptimeSeconds, services }&lt;/code&gt; (200 OK)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#64748B;strokeWidth=1;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=10;" parent="col_wallet_geo" vertex="1">
+  <mxGeometry x="20" y="510" width="380" height="85" as="geometry" />
+</mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="WORKFLOWS_PAGE" name="4. End-to-End Execution Flows &amp; Sequences">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1500" background="#F8FAFC" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="seq_title" value="&lt;b&gt;RideX Platform — End-to-End Sequence Workflows&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#64748B&quot; style=&quot;font-size: 11px;&quot;&gt;Detailed Step-by-Step Distributed Protocol Sequences: Dynamic inDrive Fare Bidding, 666k QPS Telemetry Fan-out &amp;amp; Corridor Carpool Booking&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=#1E293B;fontFamily=Helvetica;fontSize=16;fontColor=#F8FAFC;align=left;spacingLeft=25;" parent="1" vertex="1">
+  <mxGeometry x="40" y="30" width="2320" height="60" as="geometry" />
+</mxCell>
+        <mxCell id="flow_bidding" value="Flow 1: Dynamic inDrive Fare Negotiation &amp;amp; Atomic Mutex Assignment" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="40" y="120" width="740" height="960" as="geometry" />
+</mxCell>
+        <mxCell id="b1" value="&lt;b&gt;1. Rider Posts Ride Request&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Rider submits pickup, drop &amp; custom offer ₹120 (base ₹140) via &lt;code&gt;POST /api/rides/request&lt;/code&gt;.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_bidding" vertex="1">
+  <mxGeometry x="30" y="50" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="b2" value="&lt;b&gt;2. Fare Bounds &amp; Validation&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Gateway verifies ₹120 is within [0.6x - 3.0x] baseline; status initialized to &lt;code&gt;BIDDING&lt;/code&gt;.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_bidding" vertex="1">
+  <mxGeometry x="30" y="160" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=2;" parent="1" source="b1" target="b2" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="b3" value="&lt;b&gt;3. Uber H3 Proximity Fanout&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Lookup drivers in &lt;code&gt;k-ring(3)&lt;/code&gt; (3km radius); publish ride offer to Kafka &amp; driver WebSocket.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_bidding" vertex="1">
+  <mxGeometry x="30" y="270" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=2;" parent="1" source="b2" target="b3" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="b4" value="&lt;b&gt;4. Driver Counter-Bids (TTL 25s)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Driver A bids ₹130, Driver B bids ₹120; counter-bids saved in Redis Hash with 25s auto-expiration.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_bidding" vertex="1">
+  <mxGeometry x="30" y="380" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=2;" parent="1" source="b3" target="b4" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="b5" value="&lt;b&gt;5. Passenger Selects Driver A&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Passenger reviews price, rating &amp; ETA, clicks &quot;Accept Driver A&quot; &amp;rarr; &lt;code&gt;POST /api/rides/:id/accept-bid&lt;/code&gt;.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_bidding" vertex="1">
+  <mxGeometry x="30" y="490" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=2;" parent="1" source="b4" target="b5" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="b6" value="&lt;b&gt;6. Redlock Mutex Acquisition&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Acquires distributed lock &lt;code&gt;lock:ride:{id}&lt;/code&gt; in Redis (TTL 5s) to guarantee single-winner execution.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_bidding" vertex="1">
+  <mxGeometry x="30" y="600" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=2;" parent="1" source="b5" target="b6" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="b7" value="&lt;b&gt;7. Conditional Atomic Commit&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;UPDATE rides SET driver_id = A, status = &apos;ASSIGNED&apos; WHERE id = :id AND status = &apos;BIDDING&apos;&lt;/code&gt;.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_bidding" vertex="1">
+  <mxGeometry x="30" y="710" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=2;" parent="1" source="b6" target="b7" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="b8" value="&lt;b&gt;8. Bid Invalidation &amp; Release Lock&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Driver B notified of cancellation; Driver A receives ride confirmation; Redlock mutex released.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#475569;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_bidding" vertex="1">
+  <mxGeometry x="30" y="820" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=2;" parent="1" source="b7" target="b8" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="flow_telemetry" value="Flow 2: Real-Time High-Throughput Telemetry (666k QPS) &amp;amp; Room Fanout" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="820" y="120" width="740" height="960" as="geometry" />
+</mxCell>
+        <mxCell id="t1" value="&lt;b&gt;1. GPS Telemetry Ping (Every 3s)&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Driver client transmits 64-byte payload: &lt;code&gt;[driverId, lat, lng, bearing, speed, timestamp]&lt;/code&gt; over WSS.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_telemetry" vertex="1">
+  <mxGeometry x="30" y="50" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="t2" value="&lt;b&gt;2. Gateway Auth &amp; Token Bucket&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Validates JWT role = &quot;driver&quot;; token bucket checks ping frequency (&amp;le; 10 pings/sec anti-spam).&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_telemetry" vertex="1">
+  <mxGeometry x="30" y="160" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#059669;strokeWidth=2;" parent="1" source="t1" target="t2" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="t3" value="&lt;b&gt;3. Ownership &amp; Status Verification&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Verifies driver is assigned to ride and ride status is &lt;code&gt;ASSIGNED&lt;/code&gt; or &lt;code&gt;IN_PROGRESS&lt;/code&gt;.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#EF4444;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_telemetry" vertex="1">
+  <mxGeometry x="30" y="270" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#059669;strokeWidth=2;" parent="1" source="t2" target="t3" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="t4" value="&lt;b&gt;4. Redis Spatial Index Update&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Executes &lt;code&gt;GEOADD&lt;/code&gt; in Redis for instant proximity discovery; updates H3 cell coordinates.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_telemetry" vertex="1">
+  <mxGeometry x="30" y="380" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#059669;strokeWidth=2;" parent="1" source="t3" target="t4" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="t5" value="&lt;b&gt;5. Room-Isolated Pub/Sub Delivery&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Looks up &lt;code&gt;rideRooms.get(rideId)&lt;/code&gt; and forwards coordinates &lt;b&gt;only&lt;/b&gt; to assigned rider socket ($O(1)$).&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_telemetry" vertex="1">
+  <mxGeometry x="30" y="490" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#059669;strokeWidth=2;" parent="1" source="t4" target="t5" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="t6" value="&lt;b&gt;6. Kafka Async Stream Ingestion&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Coordinates streamed to Kafka &lt;code&gt;driver-locations&lt;/code&gt; topic for dead-reckoning extrapolation and analytics.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_telemetry" vertex="1">
+  <mxGeometry x="30" y="600" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#059669;strokeWidth=2;" parent="1" source="t5" target="t6" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="t7" value="&lt;b&gt;7. Rider UI Smooth Marker Animation&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Passenger frontend interpolates coordinates along road polyline with bearing orientation.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDFA;strokeColor=#0D9488;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_telemetry" vertex="1">
+  <mxGeometry x="30" y="710" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#059669;strokeWidth=2;" parent="1" source="t6" target="t7" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="t8" value="&lt;b&gt;8. 30s Heartbeat Check&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;If socket drops, server holds last known coordinate for 15s before triggering reconnect flag.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#475569;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_telemetry" vertex="1">
+  <mxGeometry x="30" y="820" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#059669;strokeWidth=2;" parent="1" source="t7" target="t8" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="flow_carpool" value="Flow 3: Intercity Carpool Corridor Matching &amp;amp; Seat Booking" style="swimlane;whiteSpace=wrap;html=1;startSize=32;rounded=1;arcSize=8;collapsible=0;fontFamily=Helvetica;fontStyle=1;fontSize=13;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#0F172A;" parent="1" vertex="1">
+  <mxGeometry x="1600" y="120" width="740" height="960" as="geometry" />
+</mxCell>
+        <mxCell id="c1" value="&lt;b&gt;1. Driver Publishes Intercity Route&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Driver specifies origin (e.g. Bangalore), destination (e.g. Chennai), departure, seats (3) and price/seat.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_carpool" vertex="1">
+  <mxGeometry x="30" y="50" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="c2" value="&lt;b&gt;2. OSRM Highway Polyline Generation&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Routing engine queries road graph to produce precise high-resolution highway polyline $R$.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_carpool" vertex="1">
+  <mxGeometry x="30" y="160" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#9333EA;strokeWidth=2;" parent="1" source="c1" target="c2" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="c3" value="&lt;b&gt;3. PostGIS ST_Buffer Corridor Creation&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;PostGIS executes &lt;code&gt;Corridor = ST_Buffer(R, 5000)&lt;/code&gt; generating a 5km wide polygon zone.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_carpool" vertex="1">
+  <mxGeometry x="30" y="270" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#9333EA;strokeWidth=2;" parent="1" source="c2" target="c3" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="c4" value="&lt;b&gt;4. Traveler Searches Intermediate Trip&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Passenger searches Hosur &amp;rarr; Vellore; PostGIS runs spatial containment filter &lt;code&gt;ST_Contains&lt;/code&gt;.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_carpool" vertex="1">
+  <mxGeometry x="30" y="380" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#9333EA;strokeWidth=2;" parent="1" source="c3" target="c4" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="c5" value="&lt;b&gt;5. Detour Constraint Verification&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Calculates detour path $(P_{orig} &amp;rarr; P_{pick} &amp;rarr; P_{drop} &amp;rarr; P_{dest})$; verifies detour &amp;le; 15% threshold.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_carpool" vertex="1">
+  <mxGeometry x="30" y="490" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#9333EA;strokeWidth=2;" parent="1" source="c4" target="c5" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="c6" value="&lt;b&gt;6. Traveler Reserves Seats&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Passenger selects 2 seats and submits booking request with client &lt;code&gt;idempotencyKey&lt;/code&gt;.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_carpool" vertex="1">
+  <mxGeometry x="30" y="600" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#9333EA;strokeWidth=2;" parent="1" source="c5" target="c6" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="c7" value="&lt;b&gt;7. Atomic Seat Decrement&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;code&gt;UPDATE carpools SET available_seats = available_seats - 2 WHERE id = :id AND available_seats &amp;gt;= 2&lt;/code&gt;.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_carpool" vertex="1">
+  <mxGeometry x="30" y="710" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#9333EA;strokeWidth=2;" parent="1" source="c6" target="c7" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+        <mxCell id="c8" value="&lt;b&gt;8. Confirmation &amp; Escrow Lock&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#475569&quot; style=&quot;font-size: 10px;&quot;&gt;Seat reservation confirmed; fare placed in escrow ledger until trip completion.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#475569;strokeWidth=1.5;fontFamily=Helvetica;fontSize=11;fontColor=#0F172A;align=left;spacingLeft=12;" parent="flow_carpool" vertex="1">
+  <mxGeometry x="30" y="820" width="680" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="edge_22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;fontFamily=Helvetica;fontSize=10;fontColor=#334155;labelBackgroundColor=#FFFFFF;strokeColor=#9333EA;strokeWidth=2;" parent="1" source="c7" target="c8" edge="1">
+  <mxGeometry relative="1" as="geometry">
+    
+  </mxGeometry>
+</mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

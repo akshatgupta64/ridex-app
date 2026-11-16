@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RideX — End-to-End System Design & Implementation Report</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page {
+      size: A4;
+      margin: 16mm 14mm 16mm 14mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.5;
+      font-size: 10.5pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    .cover {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      color: #ffffff;
+      padding: 32px 28px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border-left: 8px solid #f59e0b;
+    }
+
+    .cover h1 {
+      font-size: 24pt;
+      font-weight: 800;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+
+    .cover .subtitle {
+      font-size: 12.5pt;
+      color: #cbd5e1;
+      margin: 0 0 14px 0;
+      font-weight: 400;
+    }
+
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+    .badge-dark { background: #334155; color: #f8fafc; }
+
+    h2 {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-top: 22px;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 11.5pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin: 0 0 10px 0;
+      color: #334155;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 12pt;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .card-role {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #4338ca;
+      background: #e0e7ff;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .speech-box {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin: 10px 0;
+      font-style: italic;
+      color: #065f46;
+      font-size: 9.5pt;
+    }
+
+    .speech-title {
+      font-weight: 700;
+      font-style: normal;
+      color: #047857;
+      margin-bottom: 4px;
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 9px;
+      text-align: left;
+    }
+
+    th {
+      background: #0f172a;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f1f5f9;
+    }
+
+    ul, ol {
+      margin: 6px 0 10px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 3px;
+      color: #334155;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #e2e8f0;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+      color: #0f172a;
+    }
+
+    .code-block {
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      margin: 6px 0;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .qa-box {
+      margin-bottom: 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: #ffffff;
+      page-break-inside: avoid;
+    }
+
+    .qa-question {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 10pt;
+      margin-bottom: 3px;
+    }
+
+    .qa-answer {
+      color: #334155;
+      font-size: 9.5pt;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 10px;
+      border-top: 1px solid #cbd5e1;
+      font-size: 8.5pt;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER HEADER -->
+  <div class="cover">
+    <h1>RideX — End-to-End System Design Report</h1>
+    <div class="subtitle">Multi-Modal Mobility, Dynamic inDrive Bidding &amp; Real-Time Telemetry Platform</div>
+    <p style="margin: 0; color: #94a3b8; font-size: 9pt;">Final Project Comprehensive Engineering Submission &bull; Academic Viva Defense</p>
+    <div class="badge-bar">
+      <span class="badge badge-amber">Production Architecture</span>
+      <span class="badge badge-blue">Full Microservices HLD</span>
+      <span class="badge badge-green">Relational LLD &amp; FSM</span>
+      <span class="badge badge-purple">Uber H3 &amp; ST_Buffer</span>
+      <span class="badge badge-dark">23 Automated Tests Passing</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: EXECUTIVE SUMMARY -->
+  <h2>1. Executive Summary &amp; Core Problem Statement</h2>
+  <p>
+    Modern mobility platforms face distinct engineering bottlenecks: traditional fixed-price hailing (e.g. Uber/Rapido) lacks dynamic peer-to-peer price discovery, while pure bidding apps (e.g. inDrive) often suffer from race conditions and broadcast storms under dense demand. Furthermore, urban commuters lack unified access to long-distance highway carpooling.
+  </p>
+  <p>
+    <strong>RideX</strong> unifies intra-city bike/auto/cab booking, inDrive-style dynamic fare negotiation, and highway corridor carpooling into an event-driven, ACID-compliant architecture. The system is engineered to handle <strong>1,000,000 peak concurrent drivers</strong>, ingesting over <strong>333,000 GPS telemetry updates/second</strong> with sub-100ms dispatch latency.
+  </p>
+
+  <!-- SECTION 2: HIGH-LEVEL ARCHITECTURE (HLD) -->
+  <h2>2. High-Level Design (HLD) &amp; Microservices Topology</h2>
+  <div class="code-block">
+[ Client Tier: React 18 SPA + Leaflet.js (Rider & Driver UI) ]
+                     │
+                     │ HTTPS / WSS (Port 443 in Prod / Port 5000 in Dev)
+                     ▼
+       [ API Gateway & Ingress Tier: Nginx / Express ]
+       - Rate Limiting (Token Bucket: 20 req/s)
+       - TLS 1.3 Termination & CORS Enforcement
+       - Stateless JWT Signature Verification (HS256)
+                     │
+   ┌─────────────────┼─────────────────────────┐
+   ▼                 ▼                         ▼
+[ Auth Service ]  [ Ride & Bidding ]    [ Real-Time Telemetry Gateway ]
+(bcrypt, RBAC)    (inDrive Engine)       (Node.js WebSockets 'ws')
+   │                 │                         │
+   │                 ▼                         ▼
+   │         [ Redis Cluster ] ────────> [ OSRM Routing Engine ]
+   │          - Distributed Mutex (Redlock)  (Turn-by-turn road geometry)
+   │          - Spatial Index (Uber H3 Res 8)
+   │          - In-Memory Pub/Sub
+   │                 │
+   └─────────────────┼─────────────────────────┘
+                     ▼
+           [ PostgreSQL + PostGIS ]
+            - Master-Replica relational persistence
+            - PostGIS Spatial Corridors (ST_Buffer)
+            - Double-Entry Wallet Ledger
+  </div>
+
+  <h3>Infrastructure Component Justifications</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Technology</th>
+        <th>System Design Justification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Client App</strong></td>
+        <td>React 18 + Leaflet</td>
+        <td>Declarative reactive state, virtual DOM diffing, and lightweight GPU-accelerated map layer rendering.</td>
+      </tr>
+      <tr>
+        <td><strong>API Gateway</strong></td>
+        <td>Express / Nginx</td>
+        <td>Unified ingress handling TLS termination, token bucket rate limiting, and CORS enforcement.</td>
+      </tr>
+      <tr>
+        <td><strong>Real-Time Gateway</strong></td>
+        <td>Node.js <code>ws</code></td>
+        <td>Full-duplex persistent connections with 2-byte frame overhead, avoiding 800-byte HTTP header penalties.</td>
+      </tr>
+      <tr>
+        <td><strong>Spatial Index</strong></td>
+        <td>Uber H3 (Res 8)</td>
+        <td>Hexagonal partitioning eliminating diagonal distortion; allows O(1) in-memory <code>k-ring(3)</code> radius searches in &lt;0.5 ms.</td>
+      </tr>
+      <tr>
+        <td><strong>Road Routing</strong></td>
+        <td>OSRM Engine</td>
+        <td>Computes real road network graph topology, turn-by-turn waypoints, and travel duration instead of Euclidean distance.</td>
+      </tr>
+      <tr>
+        <td><strong>Spatial Polygon</strong></td>
+        <td>PostGIS (<code>ST_Buffer</code>)</td>
+        <td>Generates true 5 km highway corridor polygons for intercity carpooling.</td>
+      </tr>
+      <tr>
+        <td><strong>Cache &amp; Lock</strong></td>
+        <td>Redis Cluster + Redlock</td>
+        <td>High-speed in-memory state, volatile GPS telemetry TTLs (10s), and cross-pod distributed mutex locking.</td>
+      </tr>
+      <tr>
+        <td><strong>Database</strong></td>
+        <td>PostgreSQL</td>
+        <td>ACID compliance, row-level locking (<code>SELECT FOR UPDATE</code>), and foreign key referential integrity for financial records.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 3: MATHEMATICAL CAPACITY PLANNING -->
+  <h2>3. Scale &amp; Mathematical Capacity Estimations</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Target Value</th>
+        <th>Mathematical Derivation / Formula</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Peak Concurrent Drivers</strong></td>
+        <td><strong>1,000,000 drivers</strong></td>
+        <td>Multi-city volume across 100+ urban centers</td>
+      </tr>
+      <tr>
+        <td><strong>Driver GPS Frequency</strong></td>
+        <td><strong>1 ping / 3 seconds</strong></td>
+        <td>Industry standard balance between mobile battery life and map marker smoothness</td>
+      </tr>
+      <tr>
+        <td><strong>Location Ingestion QPS</strong></td>
+        <td><strong>333,333 QPS (Avg)<br>666,666 QPS (Peak)</strong></td>
+        <td><code>(1,000,000 / 3) &times; 2</code> rush-hour spike multiplier</td>
+      </tr>
+      <tr>
+        <td><strong>Network Ingestion Bandwidth</strong></td>
+        <td><strong>42.6 MB/s (341 Mbps)</strong></td>
+        <td><code>666,666 QPS &times; 64 Bytes</code> per telemetry packet</td>
+      </tr>
+      <tr>
+        <td><strong>Daily Completed Rides</strong></td>
+        <td><strong>5,000,000 rides/day</strong></td>
+        <td>Aggregated across bikes, autos, economy cabs, and parcels</td>
+      </tr>
+      <tr>
+        <td><strong>Peak Ride Booking QPS</strong></td>
+        <td><strong>~290 QPS</strong></td>
+        <td><code>(5,000,000 / 86,400) &times; 5</code> rush-hour spike multiplier</td>
+      </tr>
+      <tr>
+        <td><strong>5-Year Primary Storage</strong></td>
+        <td><strong>13.65 TB (41 TB 3x Repl.)</strong></td>
+        <td><code>5M rides &times; 1.5 KB/row &times; 365 days &times; 5 years</code></td>
+      </tr>
+      <tr>
+        <td><strong>Target Dispatch Latency</strong></td>
+        <td><strong>&lt; 85 ms (P99)</strong></td>
+        <td>Redis spatial hash lookup (&lt;0.5 ms) + WebSocket room dispatch (&lt;15 ms)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 4: LOW-LEVEL DESIGN (LLD) -->
+  <h2>4. Low-Level Design (LLD): Data Models &amp; Schemas</h2>
+  <div class="code-block">
+-- 1. USERS & ROLES TABLE
+CREATE TABLE users (
+    id VARCHAR(64) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL, -- bcrypt (work factor 10)
+    role VARCHAR(20) NOT NULL CHECK (role IN ('rider', 'driver', 'admin')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. RIDES & FINITE STATE MACHINE CORE
+CREATE TABLE rides (
+    id VARCHAR(64) PRIMARY KEY,
+    rider_id VARCHAR(64) NOT NULL REFERENCES users(id),
+    driver_id VARCHAR(64) REFERENCES users(id), -- NULL until bid acceptance
+    service VARCHAR(30) NOT NULL,
+    vehicle_type VARCHAR(20) NOT NULL,
+    pickup_address TEXT NOT NULL,
+    drop_address TEXT NOT NULL,
+    pickup_lat NUMERIC(10,6) NOT NULL,
+    pickup_lng NUMERIC(10,6) NOT NULL,
+    drop_lat NUMERIC(10,6) NOT NULL,
+    drop_lng NUMERIC(10,6) NOT NULL,
+    distance_km NUMERIC(6,2) NOT NULL,
+    duration_mins INT NOT NULL,
+    initial_offer_fare NUMERIC(8,2) NOT NULL,
+    agreed_fare NUMERIC(8,2) NOT NULL,
+    status VARCHAR(20) NOT NULL CHECK (
+        status IN ('BIDDING', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED')
+    ),
+    payment_method VARCHAR(20) DEFAULT 'wallet',
+    ride_otp VARCHAR(6) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. BIDS (inDrive Dynamic Negotiation)
+CREATE TABLE bids (
+    bid_id VARCHAR(64) PRIMARY KEY,
+    ride_id VARCHAR(64) NOT NULL REFERENCES rides(id) ON DELETE CASCADE,
+    driver_id VARCHAR(64) NOT NULL REFERENCES users(id),
+    driver_price NUMERIC(8,2) NOT NULL,
+    eta_mins INT NOT NULL,
+    status VARCHAR(20) DEFAULT 'PENDING' CHECK (
+        status IN ('PENDING', 'ACCEPTED', 'REJECTED', 'EXPIRED')
+    ),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. DOUBLE-ENTRY FINANCIAL WALLET LEDGER
+CREATE TABLE wallet_ledger (
+    id VARCHAR(64) PRIMARY KEY,
+    wallet_id VARCHAR(64) NOT NULL REFERENCES users(id),
+    ride_id VARCHAR(64),
+    type VARCHAR(10) NOT NULL CHECK (type IN ('CREDIT', 'DEBIT')),
+    amount NUMERIC(10,2) NOT NULL,
+    description TEXT,
+    idempotency_key VARCHAR(128) UNIQUE NOT NULL, -- guarantees zero duplicate charges
+    is_simulated BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 5: CORE ALGORITHMS & PROTOCOLS -->
+  <h2>5. Core Algorithms &amp; Concurrency Handling</h2>
+
+  <h3>5.1 inDrive Bidding Protocol &amp; Race Condition Prevention</h3>
+  <p>
+    When multiple drivers accept a passenger's offer simultaneously, RideX enforces <strong>Atomic Conditional Mutation</strong>:
+  </p>
+  <div class="code-block">
+UPDATE rides 
+SET driver_id = $driverId, agreed_fare = $price, status = 'ASSIGNED', updated_at = NOW()
+WHERE id = $rideId AND status = 'BIDDING';
+  </div>
+  <p>
+    The first transaction acquires the row lock and mutates <code>status</code> to <code>ASSIGNED</code> (<code>rows_affected = 1</code>). Competing transactions evaluate <code>WHERE status = 'BIDDING'</code> on the updated row, fail the condition (<code>rows_affected = 0</code>), and return an immediate <code>409 Conflict</code>. In multi-instance clusters, this is guarded by a <strong>Redis Redlock distributed mutex</strong> on <code>ride_id</code>.
+  </p>
+
+  <h3>5.2 Geospatial Indexing: Uber H3 vs. Square Grids (Geohash)</h3>
+  <ul>
+    <li><strong>Neighbor Distance Equidistance</strong>: In square grids, diagonal neighbors are $\sqrt{2} \times d \approx 1.414d$ (41.4% farther away), creating severe directional distortion during nearby driver queries. In an <strong>Uber H3 Hexagon</strong>, all 6 neighboring cells are equidistant ($1.0d$). There are no diagonals and zero directional bias.</li>
+    <li><strong>Circular Approximation</strong>: Hexagons maximize the area-to-perimeter ratio, providing the closest tessellating approximation to a real-world circular search radius.</li>
+    <li><strong>Resolution 8</strong>: Average edge length is ~461 meters. A 3 km radius query executes an in-memory <code>k-ring(3)</code> query (37 cells total) in <strong>&lt;0.5 ms</strong> in Redis.</li>
+  </ul>
+
+  <h3>5.3 Intercity Carpool Corridor Buffering (PostGIS <code>ST_Buffer</code>)</h3>
+  <ul>
+    <li><strong>Corridor Generation</strong>: The driver's intercity road vector polyline $R$ is expanded into a 5,000-meter spatial polygon:
+      <div class="code-block">Corridor = ST_Buffer(R, 5000);</div>
+    </li>
+    <li><strong>Waypoint Validation</strong>: A passenger ride request is matched if and only if both pickup and drop-off coordinates are inside the corridor:
+      <div class="code-block">ST_Contains(Corridor, P_pickup) AND ST_Contains(Corridor, P_drop) = TRUE;</div>
+    </li>
+    <li><strong>Seat Overbooking Prevention</strong>: Handled via atomic SQL decrement:
+      <div class="code-block">UPDATE carpools SET available_seats = available_seats - $seats WHERE id = $id AND available_seats &gt;= $seats;</div>
+    </li>
+  </ul>
+
+  <!-- SECTION 6: REAL-TIME WEBSOCKET TELEMETRY -->
+  <h2>6. Real-Time Telemetry &amp; WebSocket Ingress Gateway</h2>
+  <ul>
+    <li><strong>Protocol Justification</strong>: WebSockets eliminate 800-byte HTTP header overhead per ping, reducing network bandwidth by over 90% with 2-byte frame overhead.</li>
+    <li><strong>Room-Based Pub/Sub (<code>subscribe_ride</code>)</strong>: Location telemetry for Ride #101 is delivered <em>exclusively</em> to authorized subscribers of #101 ($O(1)$ delivery vs $O(N)$ global broadcast storm).</li>
+    <li><strong>Thundering Herd Mitigation</strong>: Heartbeat ping/pong every 30s prunes dead sockets. Exponential backoff with randomized jitter ($1s \to 2s \to 4s$) prevents server crashes during gateway recovery.</li>
+    <li><strong>Anti-Spoofing &amp; Boundary Validation</strong>: Validates $-90 \le \text{lat} \le 90$, $-180 \le \text{lng} \le 180$, and verifies that the transmitting user possesses the <code>driver</code> role and is assigned to the active ride.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 7: SECURITY & FINANCIAL LEDGER -->
+  <h2>7. Security, RBAC &amp; Double-Entry Financial Ledger</h2>
+  <ul>
+    <li><strong>Password Security</strong>: Passwords salted and hashed with <strong>bcrypt (work factor 10)</strong>. Plaintext passwords never exist in database records, API responses, or logs.</li>
+    <li><strong>Stateless JWTs</strong>: HS256 signed tokens encoding user ID, email, and role claims (<code>rider</code>, <code>driver</code>, <code>admin</code>), enabling horizontal scaling without centralized session bottlenecks.</li>
+    <li><strong>Object-Level Authorization</strong>: Enforces strict identity bindings (<code>targetRide.riderId === req.user.id</code>). User B cannot cancel, modify, or accept bids for User A's ride.</li>
+    <li><strong>Double-Entry Accounting &amp; Idempotency</strong>: Account balances are backed by an immutable ledger. Client-generated <code>idempotencyKey</code> UUIDs guarantee network retries never double-charge. Automated 85/15 driver payout and tip handling are enforced atomically upon trip completion.</li>
+  </ul>
+
+  <!-- SECTION 8: AUTOMATED TEST EVIDENCE -->
+  <h2>8. Automated Test Suite Verification Evidence</h2>
+  <p>The platform is validated by <strong>23 automated integration tests</strong> executing in Jest and Supertest against live endpoints and WebSocket servers:</p>
+  <div class="code-block">
+> rapido@0.1.0 test:server
+> jest server/__tests__ --runInBand --forceExit
+
+PASS server/__tests__/websocket_realtime.test.js
+  Phase 2: RideX Real-Time WebSocket Integration Test Suite
+    √ 1. Connect to WebSocket server receives connection_established event (41 ms)
+    √ 2. Unauthenticated socket attempting subscribe_ride is rejected with error (8 ms)
+    √ 3. Bystander rider cannot subscribe to another user's private ride (403 Forbidden) (7 ms)
+    √ 4. Ride owner (Rider) successfully subscribes to their own ride (6 ms)
+    √ 5. Imposter driver cannot publish GPS updates for a ride they are not assigned to (7 ms)
+    √ 6. Assigned driver sending invalid GPS coordinates is rejected (8 ms)
+    √ 7. Assigned driver sends GPS update -> delivered live to subscribed passenger map (16 ms)
+    √ 8. Bid acceptance via REST broadcasts bid_accepted to WebSocket subscribers (142 ms)
+    √ 9. Disconnecting client is cleanly removed from ride subscriber pool (54 ms)
+
+PASS server/__tests__/auth_and_ownership.test.js
+  Phase 1: RideX Auth, RBAC & Resource Ownership Test Suite
+    √ 1. Passenger A registers successfully with hashed password (no password in response) (99 ms)
+    √ 2. Driver registers successfully and driver profile is registered (64 ms)
+    √ 3. Registering with duplicate email is rejected (409 Conflict) (3 ms)
+    √ 4. Passenger A logs in with correct credentials (62 ms)
+    √ 5. Login with invalid password fails (401 Unauthorized) (62 ms)
+    √ 6. Protected endpoints reject unauthenticated requests (401) (7 ms)
+    √ 7. GET /api/auth/me returns current user data with valid Bearer token (4 ms)
+    √ 8. Register Passenger B for resource ownership testing (63 ms)
+    √ 9. Passenger A creates a ride request: bound to Passenger A identity (355 ms)
+    √ 10. Passenger B CANNOT accept a bid on Passenger A's ride (403 Forbidden) (3 ms)
+    √ 11. Passenger A (owner) CAN accept bid on their ride (4 ms)
+    √ 12. Passenger B CANNOT cancel Passenger A's ride (403 Forbidden) (4 ms)
+    √ 13. Passenger A (owner) CAN cancel their own ride (6 ms)
+    √ 14. Passenger A tops up wallet: credited strictly to Passenger A (7 ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       23 passed, 23 total
+Snapshots:   0 total
+Time:        4.236 s
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 9: TEAM VIVA DEFENSE MATRIX -->
+  <h2>9. Team Viva Defense Matrix &amp; Speech Scripts</h2>
+
+  <!-- MEMBER 1 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Member 1: Dynamic Bidding &amp; Concurrency Architect</div>
+      <div class="card-role">inDrive Bidding &amp; State Machine</div>
+    </div>
+    <p><strong>Features Owned:</strong> inDrive fare negotiation, Driver selection interface, Ride FSM, and pricing rules.</p>
+    <div class="speech-box">
+      <div class="speech-title">Member 1 Defense Speech:</div>
+      "My role was the Distributed Bidding Protocol and Concurrency Control. I designed the finite state machine governing the ride lifecycle, and engineered the atomic database transactions and Redlock distributed mutex to eliminate double-driver allocation race conditions during high-concurrency bidding."
+    </div>
+  </div>
+
+  <!-- MEMBER 2 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Member 2: Real-Time Telemetry &amp; WebSocket Ingress Architect</div>
+      <div class="card-role">Streaming Ingress &amp; Pub/Sub</div>
+    </div>
+    <p><strong>Features Owned:</strong> Live GPS tracking, WebSocket gateway, Room-based pub/sub, Heartbeat &amp; driver simulator.</p>
+    <div class="speech-box">
+      <div class="speech-title">Member 2 Defense Speech:</div>
+      "I architected the Real-Time Telemetry and WebSocket Ingress Gateway. I implemented room-isolated pub/sub to eliminate broadcast storms, engineered the heartbeat ping/pong lifecycle to handle client network drops, and designed the horizontal scaling strategy using a Redis Pub/Sub cluster."
+    </div>
+  </div>
+
+  <!-- MEMBER 3 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Member 3: Geospatial Indexing &amp; Carpooling Architect</div>
+      <div class="card-role">Spatial Indexing &amp; Route Corridor</div>
+    </div>
+    <p><strong>Features Owned:</strong> Nearby driver discovery, OSRM turn-by-turn road routing, and Intercity Carpool corridor matching.</p>
+    <div class="speech-box">
+      <div class="speech-title">Member 3 Defense Speech:</div>
+      "My responsibility was Geospatial Indexing and Carpool Corridor Matching. I designed the spatial partitioning using Uber H3 hexagonal indexing at resolution 8 for sub-millisecond driver lookups, and implemented PostGIS ST_Buffer spatial corridor matching to pair intercity carpool routes with zero overbooking."
+    </div>
+  </div>
+
+  <!-- MEMBER 4 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Member 4: Security, Database Sharding &amp; Financial Ledger Architect</div>
+      <div class="card-role">Data Tier, Auth &amp; Double-Entry Ledger</div>
+    </div>
+    <p><strong>Features Owned:</strong> Bcrypt/JWT RBAC, Resource ownership enforcement, Ride security OTP, and Double-entry wallet ledger.</p>
+    <div class="speech-box">
+      <div class="speech-title">Member 4 Defense Speech:</div>
+      "I was responsible for Security, Database Sharding, and the Financial Ledger Architecture. I designed the bcrypt/JWT authentication with object-level ownership checks, the geographic database partitioning strategy by city, and the double-entry accounting ledger with idempotency keys for zero-duplicate financial transactions."
+    </div>
+  </div>
+
+  <!-- SECTION 10: TOP VIVA QUESTIONS -->
+  <h2>10. Top System Design Viva Defense Questions</h2>
+  <div class="qa-box">
+    <div class="qa-question">Q: Why Uber H3 hexagons instead of Geohash or QuadTree?</div>
+    <div class="qa-answer"><strong>Answer:</strong> In Geohash (square grid), diagonal neighbors are $\sqrt{2} \times d \approx 1.414d$ (41.4% farther away), creating severe directional distortion during nearby driver queries. Uber H3's hexagonal grid ensures all 6 neighboring cells are exactly equidistant ($1.0d$). This eliminates directional bias and allows $O(1)$ in-memory radius searches via <code>k-ring(3)</code> in under 0.5 ms.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q: How do you prevent double payment or double top-ups during network retries?</div>
+    <div class="qa-answer"><strong>Answer:</strong> We enforce the <strong>Idempotency Pattern</strong>. Every financial request includes a unique client-generated UUID (<code>idempotencyKey</code>). The server checks if this key already exists in the immutable transaction ledger. If already processed, the server returns the existing transaction result immediately without re-debiting.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">Q: How do you prevent a broadcast storm on your WebSocket gateway?</div>
+    <div class="qa-answer"><strong>Answer:</strong> We use room-based topic filtering (<code>subscribe_ride</code>). When a driver streams GPS coordinates, the server broadcasts exclusively to clients subscribed to that specific <code>rideId</code> (the passenger). Updates are never broadcast globally to all connected clients.</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    RideX System Design &amp; Architecture Report &bull; Comprehensive Final Project Submission &bull; Academic Viva
+  </div>
+
+</body>
+</html>

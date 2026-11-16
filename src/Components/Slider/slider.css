@@ -81,7 +81,7 @@ overflow: hidden;
 text-align: justify;
 }
 
-@media(width<=767px){
+@media (max-width: 767px) {
     .slider{
         padding: 0px 20px;
     }
